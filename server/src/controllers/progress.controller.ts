@@ -2,6 +2,7 @@ import { Response } from 'express';
 import { AuthRequest } from '../middleware/auth';
 import { LessonProgress, Lesson, Chapter, Enrollment, Certificate } from '../models';
 import { generateCertificateNumber } from '../utils/helpers';
+import { Op } from 'sequelize';
 
 export const markLessonComplete = async (req: AuthRequest, res: Response) => {
   try {
@@ -37,10 +38,16 @@ export const markLessonComplete = async (req: AuthRequest, res: Response) => {
     if (enrollment) {
       const allChapters = await Chapter.findAll({ where: { courseId: chapter.courseId } });
       const chapterIds = allChapters.map((c) => c.id);
-      const totalLessons = await Lesson.count({ where: { chapterId: chapterIds } });
-      const completedLessons = await LessonProgress.count({
-        where: { userId: req.user.id, completed: true, lessonId: { [require('sequelize').Op.in]: (await Lesson.findAll({ where: { chapterId: chapterIds }, attributes: ['id'] })).map((l) => l.id) } },
-      });
+      const totalLessons = chapterIds.length > 0 ? await Lesson.count({ where: { chapterId: chapterIds } }) : 0;
+      let completedLessons = 0;
+      if (chapterIds.length > 0) {
+        const lessonIds = (await Lesson.findAll({ where: { chapterId: chapterIds }, attributes: ['id'] })).map((l) => l.id);
+        if (lessonIds.length > 0) {
+          completedLessons = await LessonProgress.count({
+            where: { userId: req.user.id, completed: true, lessonId: { [Op.in]: lessonIds } },
+          });
+        }
+      }
       const progressPercent = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
       courseProgress = { totalLessons, completedLessons, progressPercent };
 

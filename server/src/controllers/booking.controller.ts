@@ -1,6 +1,7 @@
 import { Response } from 'express';
 import { AuthRequest } from '../middleware/auth';
 import { Booking } from '../models';
+import { sequelize } from '../models';
 
 export const getAvailableBookings = async (req: AuthRequest, res: Response) => {
   try {
@@ -33,19 +34,27 @@ export const getMyBookings = async (req: AuthRequest, res: Response) => {
 };
 
 export const bookSeat = async (req: AuthRequest, res: Response) => {
+  const transaction = await sequelize.transaction();
   try {
-    if (!req.user) return res.status(401).json({ error: 'Not authenticated' });
+    if (!req.user) {
+      await transaction.rollback();
+      return res.status(401).json({ error: 'Not authenticated' });
+    }
 
     const { bookingId } = req.body;
 
-    const booking = await Booking.findByPk(bookingId);
-    if (!booking) return res.status(404).json({ error: 'Booking not found' });
+    const booking = await Booking.findByPk(bookingId, { transaction, lock: true });
+    if (!booking) {
+      await transaction.rollback();
+      return res.status(404).json({ error: 'Booking not found' });
+    }
 
     if (booking.bookedSeats >= booking.maxSeats) {
+      await transaction.rollback();
       return res.status(400).json({ error: 'No available seats' });
     }
 
-    await booking.update({ bookedSeats: booking.bookedSeats + 1 });
+    await booking.update({ bookedSeats: booking.bookedSeats + 1 }, { transaction });
 
     const userBooking = await Booking.create({
       userId: req.user.id,
@@ -58,10 +67,12 @@ export const bookSeat = async (req: AuthRequest, res: Response) => {
       status: 'pending',
       dailyRoomUrl: booking.dailyRoomUrl,
       location: booking.location,
-    });
+    }, { transaction });
 
+    await transaction.commit();
     res.status(201).json({ message: 'Booked successfully', booking: userBooking });
   } catch (error: any) {
+    await transaction.rollback();
     res.status(500).json({ error: error.message || 'Failed to book' });
   }
 };

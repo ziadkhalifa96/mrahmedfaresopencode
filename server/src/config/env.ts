@@ -19,3 +19,10 @@ export const env = {
   DAILY_API_KEY: process.env.DAILY_API_KEY || '',
   VITE_API_URL: process.env.VITE_API_URL || 'http://localhost:3000/api',
 };
+
+if (env.NODE_ENV === 'production') {
+  if (!process.env.JWT_ACCESS_SECRET || !process.env.JWT_REFRESH_SECRET) {
+    console.error('FATAL: JWT_ACCESS_SECRET and JWT_REFRESH_SECRET must be set in production');
+    process.exit(1);
+  }
+}

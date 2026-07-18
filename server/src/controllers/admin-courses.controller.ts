@@ -120,7 +120,10 @@ export const deleteCourse = async (req: AuthRequest, res: Response) => {
       return res.status(400).json({ error: 'Cannot delete course with active enrollments' });
     }
 
-    await Lesson.destroy({ where: { chapterId: { [Op.in]: (await Chapter.findAll({ where: { courseId: course.id }, attributes: ['id'] })).map((c: any) => c.id) } } });
+    const chapterIds = (await Chapter.findAll({ where: { courseId: course.id }, attributes: ['id'] })).map((c: any) => c.id);
+    if (chapterIds.length > 0) {
+      await Lesson.destroy({ where: { chapterId: { [Op.in]: chapterIds } } });
+    }
     await Chapter.destroy({ where: { courseId: course.id } });
     await course.destroy();
     res.json({ message: 'Course deleted successfully' });

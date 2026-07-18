@@ -50,7 +50,7 @@ export const getAllNotifications = async (req: AuthRequest, res: Response) => {
     if (!req.user) return res.status(401).json({ error: 'Not authenticated' });
 
     const notifications = await Notification.findAll({
-      where: { userId: req.user.id },
+      include: [{ model: User, as: 'user', attributes: ['id', 'name', 'email'] }],
       order: [['createdAt', 'DESC']],
       limit: 100,
     });

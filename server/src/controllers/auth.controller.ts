@@ -146,7 +146,7 @@ export const refreshToken = async (req: AuthRequest, res: Response) => {
 export const logout = async (req: AuthRequest, res: Response) => {
   try {
     if (req.user) {
-      await User.update({ refreshToken: undefined }, { where: { id: req.user.id } });
+      await User.update({ refreshToken: null }, { where: { id: req.user.id } });
     }
     res.json({ message: 'Logged out successfully' });
   } catch (error: any) {

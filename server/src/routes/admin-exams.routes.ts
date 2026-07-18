@@ -9,11 +9,10 @@ router.use(authorize('admin'));
 router.get('/', getExams);
 router.get('/:id', getExamDetail);
 router.post('/', createExam);
-router.put('/:id', updateExam);
-router.delete('/:id', deleteExam);
-
 router.post('/:examId/questions', createQuestion);
 router.put('/questions/:questionId', updateQuestion);
+router.put('/:id', updateExam);
 router.delete('/questions/:questionId', deleteQuestion);
+router.delete('/:id', deleteExam);
 
 export default router;

@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { authenticate, authorize } from '../middleware/auth';
+import { validate } from '../middleware/validate';
 import { getDashboardStats } from '../controllers/admin.controller';
 import { getUsers, getUser, updateUser, deleteUser } from '../controllers/admin-users.controller';
 import { getCourses, getCourse, createCourse, updateCourse, deleteCourse, createChapter, updateChapter, deleteChapter, createLesson, updateLesson, deleteLesson } from '../controllers/admin-courses.controller';
@@ -8,6 +9,7 @@ import { getBookings, updateBooking, createBooking, deleteBooking } from '../con
 import { getBlogPosts, createBlogPost, updateBlogPost, deleteBlogPost } from '../controllers/admin-blog.controller';
 import { getSettings, updateSetting, getAnnouncements, createAnnouncement, updateAnnouncement, deleteAnnouncement } from '../controllers/admin-settings.controller';
 import { upload } from '../utils/upload';
+import { createCourseSchema, updateCourseSchema, chapterSchema, updateChapterSchema, lessonSchema, updateLessonSchema } from '../validators/course.validator';
 
 const router = Router();
 
@@ -23,16 +25,16 @@ router.delete('/users/:id', deleteUser);
 
 router.get('/courses', getCourses);
 router.get('/courses/:id', getCourse);
-router.post('/courses', upload.single('thumbnail'), createCourse);
-router.put('/courses/:id', upload.single('thumbnail'), updateCourse);
+router.post('/courses', upload.single('thumbnail'), validate(createCourseSchema), createCourse);
+router.put('/courses/:id', upload.single('thumbnail'), validate(updateCourseSchema), updateCourse);
 router.delete('/courses/:id', deleteCourse);
 
-router.post('/courses/:courseId/chapters', createChapter);
-router.put('/chapters/:chapterId', updateChapter);
+router.post('/courses/:courseId/chapters', validate(chapterSchema), createChapter);
+router.put('/chapters/:chapterId', validate(updateChapterSchema), updateChapter);
 router.delete('/chapters/:chapterId', deleteChapter);
 
-router.post('/chapters/:chapterId/lessons', createLesson);
-router.put('/lessons/:lessonId', updateLesson);
+router.post('/chapters/:chapterId/lessons', validate(lessonSchema), createLesson);
+router.put('/lessons/:lessonId', validate(updateLessonSchema), updateLesson);
 router.delete('/lessons/:lessonId', deleteLesson);
 
 router.get('/payments', getPayments);

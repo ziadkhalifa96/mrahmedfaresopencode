@@ -12,7 +12,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare language: CreationOptional<'en' | 'ar'>;
   declare theme: CreationOptional<'light' | 'dark'>;
   declare isVerified: CreationOptional<boolean>;
-  declare refreshToken: CreationOptional<string>;
+  declare refreshToken: CreationOptional<string | null>;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 }
