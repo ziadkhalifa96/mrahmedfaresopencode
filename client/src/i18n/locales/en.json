@@ -1,0 +1,135 @@
+{
+  "nav": {
+    "home": "Home",
+    "courses": "Courses",
+    "blog": "Blog",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Login",
+    "register": "Register",
+    "dashboard": "Dashboard",
+    "admin": "Admin",
+    "logout": "Logout"
+  },
+  "hero": {
+    "title": "Learn English with 28 Years of Experience",
+    "subtitle": "Ahmed Fares - Diploma in Teaching English from Scotland",
+    "cta": "Start Learning Now",
+    "secondary": "View Courses"
+  },
+  "features": {
+    "title": "Why Choose Us",
+    "subtitle": "We provide the best English learning experience",
+    "courses": {
+      "title": "Comprehensive Courses",
+      "description": "Well-structured courses covering all aspects of English for Thanaweya Amma"
+    },
+    "live": {
+      "title": "Live Sessions",
+      "description": "Interactive online and offline sessions with expert guidance"
+    },
+    "exams": {
+      "title": "Online Exams",
+      "description": "Practice exams with instant grading and detailed feedback"
+    },
+    "ai": {
+      "title": "AI-Powered Learning",
+      "description": "Smart tools to enhance your learning experience"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome Back",
+      "subtitle": "Sign in to your account",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign In",
+      "noAccount": "Don't have an account?",
+      "register": "Register"
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Join Ahmed Fares English Academy",
+      "name": "Full Name",
+      "email": "Email",
+      "password": "Password",
+      "phone": "Phone (optional)",
+      "submit": "Create Account",
+      "hasAccount": "Already have an account?",
+      "login": "Sign In"
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome",
+    "myCourses": "My Courses",
+    "myPayments": "My Payments",
+    "myBookings": "My Bookings",
+    "myCertificates": "My Certificates",
+    "profile": "Profile Settings",
+    "notifications": "Notifications"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "search": "Search...",
+    "noData": "No data found",
+    "confirm": "Are you sure?",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit"
+  },
+  "lesson": {
+    "previous": "Previous",
+    "next": "Next",
+    "backToCourse": "Back to Course",
+    "noContent": "No content available yet",
+    "chapter": "Chapter",
+    "free": "Free"
+  },
+  "exam": {
+    "startExam": "Start Exam",
+    "question": "Question",
+    "previous": "Previous",
+    "next": "Next",
+    "submit": "Submit Exam",
+    "passed": "Congratulations! You Passed",
+    "notPassed": "Not Passed",
+    "correctAnswers": "correct answers",
+    "passingScore": "Passing score",
+    "retry": "Retry",
+    "attempts": "attempts"
+  },
+  "footer": {
+    "description": "Premium English learning platform for Egyptian Thanaweya Amma students",
+    "quickLinks": "Quick Links",
+    "contact": "Contact Us",
+    "followUs": "Follow Us",
+    "rights": "All rights reserved"
+  },
+  "admin": {
+    "dashboard": "Admin Dashboard",
+    "users": "Users",
+    "courses": "Courses",
+    "payments": "Payments",
+    "bookings": "Bookings",
+    "blog": "Blog",
+    "announcements": "Announcements",
+    "exams": "Exams",
+    "sendNotifications": "Notifications",
+    "settings": "Settings",
+    "backToStudent": "Back to Dashboard",
+    "totalUsers": "Total Users",
+    "totalCourses": "Total Courses",
+    "totalRevenue": "Total Revenue",
+    "totalBookings": "Total Bookings",
+    "pendingPayments": "Pending Payments",
+    "totalEnrollments": "Total Enrollments",
+    "totalCertificates": "Total Certificates",
+    "totalBlogPosts": "Blog Posts"
+  }
+}

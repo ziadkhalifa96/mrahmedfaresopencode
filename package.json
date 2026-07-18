@@ -1,0 +1,30 @@
+{
+  "name": "ahmed-fares-academy",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ahmed Fares English Academy - Premium Platform",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "build": "cd client && npm install && npm run build",
+    "build:server": "cd server && npm install && npm run build",
+    "build:all": "npm run build:server && npm run build",
+    "start": "cd server && npm start",
+    "start:prod": "NODE_ENV=production node server/dist/server.js",
+    "install:all": "cd server && npm install && cd ../client && npm install",
+    "db:migrate": "cd server && npx sequelize-cli db:migrate",
+    "db:migrate:undo": "cd server && npx sequelize-cli db:migrate:undo:all",
+    "db:seed": "cd server && npx sequelize-cli db:seed:all",
+    "db:seed:undo": "cd server && npx sequelize-cli db:seed:undo:all",
+    "db:setup": "npm run db:migrate && npm run db:seed",
+    "db:reset": "npm run db:migrate:undo && npm run db:migrate && npm run db:seed",
+    "setup": "npm run install:all && npm run db:setup && npm run build",
+    "test:client": "cd client && npm test",
+    "test:server": "cd server && npm test",
+    "test": "npm run test:client"
+  },
+  "dependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
