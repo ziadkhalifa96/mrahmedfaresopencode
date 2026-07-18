@@ -9,9 +9,9 @@
     "dev:client": "cd client && npm run dev",
     "build": "cd server && npm install --legacy-peer-deps --include=dev && npm run build && cd ../client && npm install --legacy-peer-deps --include=dev && npm run build",
     "build:server": "cd server && npm install --legacy-peer-deps && npm run build",
-    "build:all": "npm run build:server && npm run build",
+    "build:all": "npm run build",
     "start": "cd server && npm start",
-    "start:prod": "NODE_ENV=production node server/dist/server.js",
+    "start:prod": "node server/dist/server.js",
     "install:all": "cd server && npm install --legacy-peer-deps --include=dev && cd ../client && npm install --legacy-peer-deps",
     "db:migrate": "cd server && npx sequelize-cli db:migrate",
     "db:migrate:undo": "cd server && npx sequelize-cli db:migrate:undo:all",
@@ -22,7 +22,7 @@
     "setup": "npm run install:all && npm run db:setup && npm run build",
     "test:client": "cd client && npm test",
     "test:server": "cd server && npm test",
-    "test": "npm run test:client"
+    "test": "npm run test:client && npm run test:server"
   },
   "dependencies": {
     "concurrently": "^9.1.2"

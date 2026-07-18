@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { Op } from 'sequelize';
-import { Course, Chapter, Lesson } from '../models';
+import { Course, Chapter, Lesson, Exam } from '../models';
 
 export const getPublishedCourses = async (req: any, res: Response) => {
   try {
@@ -120,7 +120,7 @@ export const getLesson = async (req: any, res: Response) => {
 export const getExams = async (req: any, res: Response) => {
   try {
     const { courseId } = req.params;
-    const exams = await require('../models').Exam.findAll({
+    const exams = await Exam.findAll({
       where: { courseId, isPublished: true },
       attributes: { exclude: [] },
     });

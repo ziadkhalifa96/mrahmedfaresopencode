@@ -1,6 +1,17 @@
 import multer from 'multer';
 import path from 'path';
+import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
+
+const uploadsBase = path.join(__dirname, '..', '..', 'uploads');
+
+const uploadFolders = ['avatars', 'courses', 'blog', 'payments', 'general'];
+uploadFolders.forEach((folder) => {
+  const dir = path.join(uploadsBase, folder);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+});
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -13,7 +24,7 @@ const storage = multer.diskStorage({
       : req.path.includes('payment')
       ? 'payments'
       : 'general';
-    cb(null, path.join(__dirname, '..', '..', 'uploads', folder));
+    cb(null, path.join(uploadsBase, folder));
   },
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);

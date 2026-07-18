@@ -5,6 +5,7 @@ class SiteSetting extends Model<InferAttributes<SiteSetting>, InferCreationAttri
   declare id: CreationOptional<number>;
   declare key: string;
   declare value: object;
+  declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 }
 
@@ -13,6 +14,7 @@ SiteSetting.init(
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     key: { type: DataTypes.STRING(100), allowNull: false, unique: true },
     value: { type: DataTypes.JSON, allowNull: false },
+    createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
   },
   {

@@ -45,6 +45,7 @@ export const register = async (req: AuthRequest, res: Response) => {
       language: user.language,
       theme: user.theme,
       avatar: user.avatar,
+      isVerified: user.isVerified,
       createdAt: user.createdAt,
     };
 

@@ -2,8 +2,16 @@ node_modules/
 dist/
 .env
 .env.local
+.env.*.local
 *.log
+*.tsbuildinfo
+.eslintcache
 .DS_Store
 Thumbs.db
+Desktop.ini
 uploads/
 coverage/
+.idea/
+.vscode/
+*.swp
+*.swo
