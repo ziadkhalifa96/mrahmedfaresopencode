@@ -202,6 +202,15 @@ export const publicSiteSettingsApi = {
   getSettings: () => api.get('/public/site-settings'),
 };
 
+// Hero Slides
+export const heroSlidesApi = {
+  getPublic: () => api.get<{ slides: any[] }>('/hero-slides'),
+  getAll: () => api.get<{ slides: any[] }>('/hero-slides/admin'),
+  create: (data: any) => api.post('/hero-slides/admin', data),
+  update: (id: number, data: any) => api.put(`/hero-slides/admin/${id}`, data),
+  delete: (id: number) => api.delete(`/hero-slides/admin/${id}`),
+};
+
 // Progress
 export const progressApi = {
   markComplete: (lessonId: number) =>

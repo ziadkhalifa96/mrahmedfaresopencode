@@ -4,6 +4,7 @@ import { sequelize } from './models';
 import User from './models/User';
 import SiteSetting from './models/SiteSetting';
 import PageContent from './models/PageContent';
+import HeroSlide from './models/HeroSlide';
 import bcrypt from 'bcryptjs';
 
 const seedDatabase = async () => {
@@ -58,6 +59,13 @@ const seedDatabase = async () => {
   if (contentCount === 0) {
     await seedPageContent(queryInterface);
     console.log('Page content seeded');
+  }
+
+  // Seed hero slides if empty
+  const slidesCount = await HeroSlide.count();
+  if (slidesCount === 0) {
+    await seedHeroSlides(queryInterface);
+    console.log('Hero slides seeded');
   }
 };
 
@@ -117,6 +125,55 @@ const seedPageContent = async (queryInterface: any) => {
     { page: 'contact', section: 'whatsapp', key: 'link', value_en: 'https://wa.me/201144258565', value_ar: 'https://wa.me/201144258565', created_at: now, updated_at: now },
   ];
   await queryInterface.bulkInsert('page_content', data);
+};
+
+const seedHeroSlides = async (queryInterface: any) => {
+  const now = new Date();
+  const slides = [
+    {
+      title_en: 'Learn English with 28 Years of Experience',
+      title_ar: 'اتعلم إنجليزي مع 28 سنة خبرة',
+      subtitle_en: 'Join thousands of students who achieved their dreams with Ahmed Fares Academy',
+      subtitle_ar: 'انضم لآلاف الطلاب اللي حققوا أحلامهم مع أكاديمية أ/احمد فارس',
+      cta_text_en: 'Start Learning Now',
+      cta_text_ar: 'ابدأ التعلم الآن',
+      cta_link: '/courses',
+      bg_gradient: 'from-primary via-primary-dark to-blue-900',
+      order_index: 1,
+      is_active: true,
+      created_at: now,
+      updated_at: now,
+    },
+    {
+      title_en: 'Premium Courses for Thanaweya Amma',
+      title_ar: 'كورسات بريميوم للثانوية العامة',
+      subtitle_en: 'Comprehensive English courses designed to guarantee your success',
+      subtitle_ar: 'كورسات إنجليزية شاملة مصممة لضمان نجاحك',
+      cta_text_en: 'Browse Courses',
+      cta_text_ar: 'تصفح الكورسات',
+      cta_link: '/courses',
+      bg_gradient: 'from-blue-900 via-primary to-indigo-900',
+      order_index: 2,
+      is_active: true,
+      created_at: now,
+      updated_at: now,
+    },
+    {
+      title_en: 'Diploma in Teaching English from Scotland',
+      title_ar: 'دبلومة تدريس الإنجليزية من اسكتلندا',
+      subtitle_en: 'World-class teaching methodologies brought to your classroom',
+      subtitle_ar: 'منهجيات تدريس عالمية تيجي للفصل بتاعك',
+      cta_text_en: 'About Us',
+      cta_text_ar: 'اعرف عنّا',
+      cta_link: '/about',
+      bg_gradient: 'from-indigo-900 via-blue-800 to-primary',
+      order_index: 3,
+      is_active: true,
+      created_at: now,
+      updated_at: now,
+    },
+  ];
+  await queryInterface.bulkInsert('hero_slides', slides);
 };
 
 const startServer = async () => {

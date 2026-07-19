@@ -17,6 +17,7 @@ import Page from './Page';
 import SiteSetting from './SiteSetting';
 import Announcement from './Announcement';
 import PageContent from './PageContent';
+import HeroSlide from './HeroSlide';
 
 // Course associations
 Course.hasMany(Chapter, { foreignKey: 'courseId', as: 'chapters' });
@@ -101,4 +102,5 @@ export {
   SiteSetting,
   Announcement,
   PageContent,
+  HeroSlide,
 };

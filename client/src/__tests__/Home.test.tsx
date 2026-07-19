@@ -8,6 +8,9 @@ vi.mock('../services', () => ({
   publicApi: {
     getAnnouncements: vi.fn().mockResolvedValue({ data: { announcements: [] } }),
   },
+  heroSlidesApi: {
+    getPublic: vi.fn().mockResolvedValue({ data: { slides: [] } }),
+  },
 }));
 
 vi.mock('../services/api', () => ({
