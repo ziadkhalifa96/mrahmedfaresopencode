@@ -5,8 +5,7 @@ import SEO from '../../components/ui/SEO';
 import { adminApi } from '../../services';
 
 export default function AdminUsers() {
-  const { t, i18n } = useTranslation();
-  const isArabic = i18n.language === 'ar';
+  const { t } = useTranslation();
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -33,7 +32,7 @@ export default function AdminUsers() {
   useEffect(() => { fetchUsers(); }, [fetchUsers]);
 
   const handleDelete = async (id: number) => {
-    if (!confirm(isArabic ? 'هل تريد حذف هذا المستخدم؟' : 'Delete this user?')) return;
+    if (!confirm(t('admin.delete_user_confirm'))) return;
     try {
       await adminApi.users.delete(id);
       fetchUsers();
@@ -58,7 +57,7 @@ export default function AdminUsers() {
 
   return (
     <>
-      <SEO title={isArabic ? 'المستخدمين' : 'Users'} />
+      <SEO title={t('seo.adminUsers')} />
       <div>
         <h1 className="text-2xl font-bold text-gray-900 mb-6">{t('admin.users')}</h1>
 
@@ -69,9 +68,9 @@ export default function AdminUsers() {
               placeholder={t('common.search')} className="input pl-10" />
           </div>
           <select value={roleFilter} onChange={(e) => { setRoleFilter(e.target.value); setPage(1); }} className="input w-auto">
-            <option value="">{isArabic ? 'جميع الأدوار' : 'All Roles'}</option>
-            <option value="student">{isArabic ? 'طالب' : 'Student'}</option>
-            <option value="admin">{isArabic ? 'مدير' : 'Admin'}</option>
+            <option value="">{t('admin.all_roles')}</option>
+            <option value="student">{t('admin.student')}</option>
+            <option value="admin">{t('admin.admin_role')}</option>
           </select>
         </div>
 
@@ -85,12 +84,12 @@ export default function AdminUsers() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b text-left">
-                    <th className="pb-3 font-medium text-gray-600">{isArabic ? 'الاسم' : 'Name'}</th>
-                    <th className="pb-3 font-medium text-gray-600">{isArabic ? 'البريد' : 'Email'}</th>
-                    <th className="pb-3 font-medium text-gray-600">{isArabic ? 'الهاتف' : 'Phone'}</th>
-                    <th className="pb-3 font-medium text-gray-600">{isArabic ? 'الدور' : 'Role'}</th>
-                    <th className="pb-3 font-medium text-gray-600">{isArabic ? 'الحالة' : 'Status'}</th>
-                    <th className="pb-3 font-medium text-gray-600">{isArabic ? 'الإجراءات' : 'Actions'}</th>
+                    <th className="pb-3 font-medium text-gray-600">{t('admin.name')}</th>
+                    <th className="pb-3 font-medium text-gray-600">{t('admin.email')}</th>
+                    <th className="pb-3 font-medium text-gray-600">{t('admin.phone')}</th>
+                    <th className="pb-3 font-medium text-gray-600">{t('admin.role')}</th>
+                    <th className="pb-3 font-medium text-gray-600">{t('admin.status')}</th>
+                    <th className="pb-3 font-medium text-gray-600">{t('admin.actions')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -101,12 +100,12 @@ export default function AdminUsers() {
                       <td className="py-3 text-gray-600">{user.phone || '-'}</td>
                       <td className="py-3">
                         <span className={`text-xs px-2 py-1 rounded-full ${user.role === 'admin' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'}`}>
-                          {user.role === 'admin' ? (isArabic ? 'مدير' : 'Admin') : (isArabic ? 'طالب' : 'Student')}
+                          {user.role === 'admin' ? t('admin.admin_role') : t('admin.student')}
                         </span>
                       </td>
                       <td className="py-3">
                         <span className={`text-xs px-2 py-1 rounded-full ${user.isVerified ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
-                          {user.isVerified ? (isArabic ? 'محقق' : 'Verified') : (isArabic ? 'غير محقق' : 'Unverified')}
+                          {user.isVerified ? t('common.verified') : t('common.unverified')}
                         </span>
                       </td>
                       <td className="py-3">
@@ -134,26 +133,26 @@ export default function AdminUsers() {
         {editing && selectedUser && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => { setEditing(false); setSelectedUser(null); }}>
             <div className="bg-white rounded-xl p-6 max-w-md w-full" onClick={(e) => e.stopPropagation()}>
-              <h2 className="text-lg font-semibold mb-4">{isArabic ? 'تعديل المستخدم' : 'Edit User'}</h2>
+              <h2 className="text-lg font-semibold mb-4">{t('admin.edit_user')}</h2>
               <form onSubmit={handleUpdate} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">{isArabic ? 'الاسم' : 'Name'}</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.name')}</label>
                   <input type="text" name="name" defaultValue={selectedUser.name} className="input" required />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">{isArabic ? 'الهاتف' : 'Phone'}</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.phone')}</label>
                   <input type="tel" name="phone" defaultValue={selectedUser.phone} className="input" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">{isArabic ? 'الدور' : 'Role'}</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.role')}</label>
                   <select name="role" defaultValue={selectedUser.role} className="input">
-                    <option value="student">{isArabic ? 'طالب' : 'Student'}</option>
-                    <option value="admin">{isArabic ? 'مدير' : 'Admin'}</option>
+                    <option value="student">{t('admin.student')}</option>
+                    <option value="admin">{t('admin.admin_role')}</option>
                   </select>
                 </div>
                 <div className="flex items-center gap-2">
                   <input type="checkbox" name="isVerified" defaultChecked={selectedUser.isVerified} className="w-4 h-4" />
-                  <label className="text-sm">{isArabic ? 'محقق' : 'Verified'}</label>
+                  <label className="text-sm">{t('common.verified')}</label>
                 </div>
                 <div className="flex gap-3">
                   <button type="submit" className="btn-primary">{t('common.save')}</button>

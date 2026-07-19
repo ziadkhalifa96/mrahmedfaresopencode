@@ -5,8 +5,7 @@ import SEO from '../../components/ui/SEO';
 import { adminApi } from '../../services';
 
 export default function AdminSettings() {
-  const { t, i18n } = useTranslation();
-  const isArabic = i18n.language === 'ar';
+  const { t } = useTranslation();
   const [settings, setSettings] = useState<Record<string, any>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -59,22 +58,22 @@ export default function AdminSettings() {
 
   const settingGroups = [
     {
-      title: isArabic ? 'معلومات الموقع' : 'Site Info',
+      title: t('admin.site_info'),
       keys: ['siteName', 'siteNameAr', 'siteDescription', 'siteDescriptionAr', 'contactPhone', 'contactEmail', 'contactAddress', 'contactAddressAr'],
     },
     {
-      title: isArabic ? 'وسائل التواصل الاجتماعي' : 'Social Media',
+      title: t('admin.social_media'),
       keys: ['facebook', 'instagram', 'youtube', 'whatsapp', 'telegram'],
     },
     {
-      title: isArabic ? 'الإعدادات العامة' : 'General',
+      title: t('admin.general'),
       keys: ['currency', 'defaultLanguage'],
     },
   ];
 
   return (
     <>
-      <SEO title={isArabic ? 'الإعدادات' : 'Settings'} />
+      <SEO title={t('seo.adminSettings')} />
       <div>
         <h1 className="text-2xl font-bold text-gray-900 mb-8">{t('admin.settings')}</h1>
 
@@ -104,7 +103,7 @@ export default function AdminSettings() {
 
           {success && (
             <div className="bg-success/10 text-success px-4 py-2 rounded-lg text-sm">
-              {isArabic ? 'تم الحفظ بنجاح' : 'Settings saved successfully'}
+              {t('admin.settings_saved')}
             </div>
           )}
 

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { HelmetProvider } from 'react-helmet-async';
 import Home from '../pages/public/Home';

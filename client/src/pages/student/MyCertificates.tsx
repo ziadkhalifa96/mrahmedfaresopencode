@@ -5,11 +5,11 @@ import { Award, Loader2, Eye } from 'lucide-react';
 import { Link } from 'react-router';
 import SEO from '../../components/ui/SEO';
 import { certificatesApi } from '../../services';
+import { localize } from '../../utils/localize';
 import type { Certificate } from '../../types';
 
 export default function MyCertificates() {
-  const { t, i18n } = useTranslation();
-  const isArabic = i18n.language === 'ar';
+  const { t } = useTranslation();
   const [certificates, setCertificates] = useState<Certificate[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -27,7 +27,7 @@ export default function MyCertificates() {
 
   return (
     <>
-      <SEO title={isArabic ? 'شهاداتي' : 'My Certificates'} />
+      <SEO title={t('seo.myCertificates')} />
       <div>
         <h1 className="text-2xl font-bold text-gray-900 mb-8">{t('dashboard.myCertificates')}</h1>
 
@@ -39,10 +39,10 @@ export default function MyCertificates() {
           <div className="text-center py-20">
             <Award className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 mb-2">
-              {isArabic ? 'لا توجد شهادات بعد' : 'No Certificates Yet'}
+              {t('certificates.empty')}
             </h3>
             <p className="text-gray-600">
-              {isArabic ? 'أكمل كورسًا للحصول على شهادتك' : 'Complete a course to get your certificate'}
+              {t('certificates.empty_desc')}
             </p>
           </div>
         ) : (
@@ -61,10 +61,10 @@ export default function MyCertificates() {
                   </div>
                   <div className="flex-1">
                     <h3 className="font-semibold text-gray-900">
-                      {isArabic ? cert.course?.titleAr : cert.course?.title}
+                      {cert.course ? localize(cert.course, 'title') : ''}
                     </h3>
                     <p className="text-sm text-gray-600 mt-1">
-                      {isArabic ? 'رقم الشهادة:' : 'Certificate:'} {cert.certificateNumber}
+                      {t('certificates.number')} {cert.certificateNumber}
                     </p>
                     <p className="text-xs text-gray-500 mt-1">
                       {new Date(cert.issuedAt).toLocaleDateString()}
@@ -75,7 +75,7 @@ export default function MyCertificates() {
                     className="flex items-center gap-1 text-sm text-primary hover:text-primary/80 font-medium flex-shrink-0"
                   >
                     <Eye className="w-4 h-4" />
-                    {isArabic ? 'عرض' : 'View'}
+                    {t('common.view')}
                   </Link>
                 </div>
               </motion.div>

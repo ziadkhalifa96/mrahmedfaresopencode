@@ -188,7 +188,25 @@
     },
     "notFound": {
       "title": "Page Not Found"
-    }
+    },
+    "profile": "Profile",
+    "changePassword": "Change Password",
+    "myCertificates": "My Certificates",
+    "myPayments": "My Payments",
+    "notifications": "Notifications",
+    "myBookings": "My Bookings",
+    "myCourses": "My Courses",
+    "dashboard": "Dashboard",
+    "adminDashboard": "Admin Dashboard",
+    "adminCourses": "Courses",
+    "adminBlog": "Blog",
+    "adminAnnouncements": "Announcements",
+    "adminBookings": "Bookings",
+    "adminSettings": "Settings",
+    "adminExams": "Exams",
+    "adminNotifications": "Send Notifications",
+    "adminPayments": "Payments",
+    "adminUsers": "Users"
   },
   "courses": {
     "hero_title": "Our Courses",
@@ -342,6 +360,8 @@
     "dark_mode": "Dark mode",
     "light_mode": "Light mode",
     "language_toggle": "Switch language",
+    "switch_to_english": "Switch to English",
+    "switch_to_arabic": "Switch to Arabic",
     "academy_name": "Ahmed Fares Academy"
   },
   "admin": {
@@ -459,7 +479,17 @@
     "video_url": "Video URL",
     "lesson_type_text": "Text",
     "lesson_type_video": "Video",
-    "lesson_type_quiz": "Quiz"
+    "lesson_type_quiz": "Quiz",
+    "delete_course_confirm": "Delete this course?",
+    "delete_chapter_confirm": "Delete this chapter?",
+    "delete_lesson_confirm": "Delete this lesson?",
+    "delete_post_confirm": "Delete this post?",
+    "delete_booking_confirm": "Delete this booking?",
+    "delete_user_confirm": "Delete this user?",
+    "delete_exam_confirm": "Delete this exam?",
+    "delete_question_confirm": "Delete this question?",
+    "delete_announcement_confirm": "Delete this announcement?",
+    "invalid_options_format": "Invalid options format"
   },
   "payments": {
     "new_payment": "New Payment",
@@ -483,13 +513,52 @@
     "link_optional": "Link (optional)",
     "delete_confirm": "Delete this announcement?"
   },
+  "bookings": {
+    "empty": "No Bookings Yet",
+    "online": "Online Session",
+    "offline": "Offline Session",
+    "cancel_confirm": "Cancel this booking?"
+  },
   "notifications_page": {
-    "no_notifications": "No notifications yet"
+    "no_notifications": "No notifications yet",
+    "unread": "unread notifications",
+    "mark_all_read": "Mark All Read",
+    "empty": "No Notifications"
   },
   "profile_page": {
     "profile_title": "Profile",
     "name": "Name",
     "email": "Email",
     "phone": "Phone"
+  },
+  "password": {
+    "title": "Change Password",
+    "security": "Security",
+    "update_subtitle": "Update your password",
+    "current": "Current Password",
+    "new": "New Password",
+    "confirm": "Confirm Password",
+    "mismatch": "Passwords do not match",
+    "changed": "Password changed successfully",
+    "error": "An error occurred"
+  },
+  "certificates": {
+    "empty": "No Certificates Yet",
+    "empty_desc": "Complete a course to get your certificate",
+    "number": "Certificate:",
+    "not_found": "Certificate not found",
+    "back_to_certs": "Back to Certificates",
+    "title": "Certificate",
+    "print": "Print",
+    "download": "Download",
+    "academy_name": "Ahmed Fares Academy",
+    "academy_subtitle": "English Academy",
+    "completion": "Certificate of Completion",
+    "certifies_that": "This is to certify that",
+    "student_fallback": "Student",
+    "completed_text": "Has successfully completed the course",
+    "director": "Director",
+    "cert_number": "Certificate No.",
+    "issue_date": "Issue Date"
   }
 }

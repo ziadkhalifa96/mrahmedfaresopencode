@@ -4,11 +4,11 @@ import { motion } from 'motion/react';
 import { Bell, BellOff, Loader2 } from 'lucide-react';
 import SEO from '../../components/ui/SEO';
 import { notificationsApi } from '../../services';
+import { localize } from '../../utils/localize';
 import type { Notification } from '../../types';
 
 export default function Notifications() {
-  const { t, i18n } = useTranslation();
-  const isArabic = i18n.language === 'ar';
+  const { t } = useTranslation();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -42,20 +42,20 @@ export default function Notifications() {
 
   return (
     <>
-      <SEO title={isArabic ? 'الإشعارات' : 'Notifications'} />
+      <SEO title={t('seo.notifications')} />
       <div>
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">{t('dashboard.notifications')}</h1>
             {unreadCount > 0 && (
               <p className="text-sm text-gray-600 mt-1">
-                {unreadCount} {isArabic ? 'إشعار غير مقروء' : 'unread notifications'}
+                {unreadCount} {t('notifications_page.unread')}
               </p>
             )}
           </div>
           {unreadCount > 0 && (
             <button onClick={handleMarkAllAsRead} className="btn-outline text-sm">
-              {isArabic ? 'تحديد الكل كمقروء' : 'Mark All Read'}
+              {t('notifications_page.mark_all_read')}
             </button>
           )}
         </div>
@@ -68,7 +68,7 @@ export default function Notifications() {
           <div className="text-center py-20">
             <BellOff className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 mb-2">
-              {isArabic ? 'لا توجد إشعارات' : 'No Notifications'}
+              {t('notifications_page.empty')}
             </h3>
           </div>
         ) : (
@@ -94,8 +94,8 @@ export default function Notifications() {
                     <Bell className="w-5 h-5" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-gray-900">{isArabic ? notif.titleAr : notif.title}</h3>
-                    <p className="text-sm text-gray-600 mt-1">{isArabic ? notif.messageAr : notif.message}</p>
+                    <h3 className="font-semibold text-gray-900">{localize(notif, 'title')}</h3>
+                    <p className="text-sm text-gray-600 mt-1">{localize(notif, 'message')}</p>
                     <p className="text-xs text-gray-500 mt-2">
                       {new Date(notif.createdAt).toLocaleDateString()}
                     </p>

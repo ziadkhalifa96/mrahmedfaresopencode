@@ -6,8 +6,7 @@ import SEO from '../../components/ui/SEO';
 import { adminApi } from '../../services';
 
 export default function AdminBookings() {
-  const { t, i18n } = useTranslation();
-  const isArabic = i18n.language === 'ar';
+  const { t } = useTranslation();
   const [bookings, setBookings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -54,46 +53,46 @@ export default function AdminBookings() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm(isArabic ? 'هل تريد حذف هذا الحجز؟' : 'Delete this booking?')) return;
+    if (!confirm(t('admin.delete_booking_confirm'))) return;
     try { await adminApi.bookings.delete(id); fetchBookings(); } catch {}
   };
 
   const statusBadge = (status: string) => {
     const styles: Record<string, string> = { pending: 'bg-yellow-100 text-yellow-700', confirmed: 'bg-green-100 text-green-700', cancelled: 'bg-red-100 text-red-700' };
-    const labels: Record<string, string> = { pending: isArabic ? 'قيد الانتظار' : 'Pending', confirmed: isArabic ? 'مؤكد' : 'Confirmed', cancelled: isArabic ? 'ملغي' : 'Cancelled' };
+    const labels: Record<string, string> = { pending: t('common.pending'), confirmed: t('common.confirmed'), cancelled: t('common.cancelled') };
     return <span className={`text-xs px-2 py-1 rounded-full ${styles[status]}`}>{labels[status]}</span>;
   };
 
   return (
     <>
-      <SEO title={isArabic ? 'الحجوزات' : 'Bookings'} />
+      <SEO title={t('seo.adminBookings')} />
       <div>
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-gray-900">{t('admin.bookings')}</h1>
-          <button onClick={() => setShowForm(!showForm)} className="btn-primary"><Plus className="w-4 h-4" /> {isArabic ? 'إضافة حجز' : 'Add Booking'}</button>
+          <button onClick={() => setShowForm(!showForm)} className="btn-primary"><Plus className="w-4 h-4" /> {t('admin.add_booking')}</button>
         </div>
 
         {showForm && (
           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="card mb-6">
-            <h2 className="text-lg font-semibold mb-4">{isArabic ? 'حجز جديد' : 'New Booking'}</h2>
+            <h2 className="text-lg font-semibold mb-4">{t('admin.new_booking')}</h2>
             <form onSubmit={handleCreate} className="space-y-4">
               <div className="grid md:grid-cols-3 gap-4">
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">{isArabic ? 'النوع' : 'Type'}</label>
-                  <select name="type" className="input"><option value="online">{isArabic ? 'أونلاين' : 'Online'}</option><option value="offline">{isArabic ? 'أوفلاين' : 'Offline'}</option></select></div>
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">{isArabic ? 'التاريخ' : 'Date'}</label><input type="date" name="date" className="input" required /></div>
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">{isArabic ? 'الوقت' : 'Time'}</label><input type="time" name="time" className="input" required /></div>
+                <div><label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.type')}</label>
+                  <select name="type" className="input"><option value="online">{t('admin.online')}</option><option value="offline">{t('admin.offline')}</option></select></div>
+                <div><label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.date')}</label><input type="date" name="date" className="input" required /></div>
+                <div><label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.time')}</label><input type="time" name="time" className="input" required /></div>
               </div>
               <div className="grid md:grid-cols-3 gap-4">
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">{isArabic ? 'المدة (دقيقة)' : 'Duration (min)'}</label><input type="number" name="duration" className="input" defaultValue={60} /></div>
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">{isArabic ? 'الأماكن' : 'Max Seats'}</label><input type="number" name="maxSeats" className="input" defaultValue={1} required /></div>
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">{isArabic ? 'رابط الميتابوم' : 'DailyRoom URL'}</label><input type="url" name="dailyRoomUrl" className="input" /></div>
+                <div><label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.duration_min')}</label><input type="number" name="duration" className="input" defaultValue={60} /></div>
+                <div><label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.max_seats')}</label><input type="number" name="maxSeats" className="input" defaultValue={1} required /></div>
+                <div><label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.daily_room_url')}</label><input type="url" name="dailyRoomUrl" className="input" /></div>
               </div>
               <div className="grid md:grid-cols-2 gap-4">
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">{isArabic ? 'المكان' : 'Location'}</label><input type="text" name="location" className="input" /></div>
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">{isArabic ? 'ملاحظات' : 'Notes'}</label><input type="text" name="notes" className="input" /></div>
+                <div><label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.location')}</label><input type="text" name="location" className="input" /></div>
+                <div><label className="block text-sm font-medium text-gray-700 mb-1">{t('common.notes')}</label><input type="text" name="notes" className="input" /></div>
               </div>
               <div className="flex gap-3">
-                <button type="submit" className="btn-primary">{isArabic ? 'إنشاء' : 'Create'}</button>
+                <button type="submit" className="btn-primary">{t('common.create')}</button>
                 <button type="button" onClick={() => setShowForm(false)} className="btn-outline">{t('common.cancel')}</button>
               </div>
             </form>
@@ -101,10 +100,10 @@ export default function AdminBookings() {
         )}
 
         <select value={statusFilter} onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }} className="input w-auto mb-6">
-          <option value="">{isArabic ? 'جميع الحالات' : 'All Status'}</option>
-          <option value="pending">{isArabic ? 'قيد الانتظار' : 'Pending'}</option>
-          <option value="confirmed">{isArabic ? 'مؤكد' : 'Confirmed'}</option>
-          <option value="cancelled">{isArabic ? 'ملغي' : 'Cancelled'}</option>
+          <option value="">{t('common.all_status')}</option>
+          <option value="pending">{t('common.pending')}</option>
+          <option value="confirmed">{t('common.confirmed')}</option>
+          <option value="cancelled">{t('common.cancelled')}</option>
         </select>
 
         {loading ? (
@@ -118,14 +117,14 @@ export default function AdminBookings() {
                 <div key={booking.id} className="card">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="font-medium text-gray-900">{booking.user?.name} - {booking.type === 'online' ? 'Online' : 'Offline'}</div>
+                      <div className="font-medium text-gray-900">{booking.user?.name} - {booking.type === 'online' ? t('admin.online') : t('admin.offline')}</div>
                       <div className="text-sm text-gray-600">{booking.date} {booking.time} - {booking.duration}min</div>
                       <div className="text-xs text-gray-500">{booking.location || booking.dailyRoomUrl || ''} {booking.bookedSeats}/{booking.maxSeats} seats</div>
                     </div>
                     <div className="flex items-center gap-2">
                       {statusBadge(booking.status)}
                       {booking.status === 'pending' && (
-                        <button onClick={() => handleUpdateStatus(booking.id, 'confirmed')} className="text-xs text-green-600 hover:underline">{isArabic ? 'تأكيد' : 'Confirm'}</button>
+                        <button onClick={() => handleUpdateStatus(booking.id, 'confirmed')} className="text-xs text-green-600 hover:underline">{t('admin.confirm')}</button>
                       )}
                       <button onClick={() => handleDelete(booking.id)} className="p-1 text-gray-400 hover:text-red-500"><Trash2 className="w-4 h-4" /></button>
                     </div>

@@ -4,12 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { Loader2, ArrowLeft, Printer, Download } from 'lucide-react';
 import SEO from '../../components/ui/SEO';
 import { certificatesApi } from '../../services';
+import { localize } from '../../utils/localize';
 import type { Certificate } from '../../types';
 
 export default function CertificateView() {
   const { id } = useParams<{ id: string }>();
-  const { i18n } = useTranslation();
-  const isArabic = i18n.language === 'ar';
+  const { t, i18n } = useTranslation();
   const [certificate, setCertificate] = useState<Certificate | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -40,36 +40,36 @@ export default function CertificateView() {
   if (!certificate) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-4">
-        <p className="text-gray-600">{isArabic ? 'الشهادة غير موجودة' : 'Certificate not found'}</p>
+        <p className="text-gray-600">{t('certificates.not_found')}</p>
         <Link to="/dashboard/certificates" className="btn-primary">
-          {isArabic ? 'العودة للشهادات' : 'Back to Certificates'}
+          {t('certificates.back_to_certs')}
         </Link>
       </div>
     );
   }
 
-  const issuedDate = new Date(certificate.issuedAt).toLocaleDateString(isArabic ? 'ar-EG' : 'en-US', {
+  const issuedDate = new Date(certificate.issuedAt).toLocaleDateString(i18n.language === 'ar' ? 'ar-EG' : 'en-US', {
     year: 'numeric', month: 'long', day: 'numeric',
   });
 
   return (
     <>
-      <SEO title={isArabic ? `شهادة ${certificate.course?.titleAr}` : `Certificate - ${certificate.course?.title}`} />
+      <SEO title={`${i18n.language === 'ar' ? 'شهادة' : 'Certificate -'} ${certificate.course ? localize(certificate.course, 'title') : ''}`} />
       <div className="min-h-screen bg-gray-100 print:bg-white">
         <div className="no-print bg-white border-b sticky top-0 z-10">
           <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
             <Link to="/dashboard/certificates" className="flex items-center gap-2 text-gray-600 hover:text-gray-900">
-              <ArrowLeft className={`w-5 h-5 ${isArabic ? 'rotate-180' : ''}`} />
-              {isArabic ? 'العودة' : 'Back'}
+              <ArrowLeft className={`w-5 h-5 ${i18n.language === 'ar' ? 'rotate-180' : ''}`} />
+              {t('common.back')}
             </Link>
             <div className="flex gap-3">
               <button onClick={handlePrint} className="btn-outline flex items-center gap-2">
                 <Printer className="w-4 h-4" />
-                {isArabic ? 'طباعة' : 'Print'}
+                {t('certificates.print')}
               </button>
               <button onClick={handlePrint} className="btn-primary flex items-center gap-2">
                 <Download className="w-4 h-4" />
-                {isArabic ? 'تحميل' : 'Download'}
+                {t('certificates.download')}
               </button>
             </div>
           </div>
@@ -89,26 +89,26 @@ export default function CertificateView() {
                 <span className="text-3xl font-bold text-primary">AF</span>
               </div>
               <h1 className="text-3xl font-bold text-gray-900 mb-1">
-                {isArabic ? 'أكاديمية أحمد فares' : 'Ahmed Fares Academy'}
+                {t('certificates.academy_name')}
               </h1>
-              <p className="text-gray-500 text-sm">{isArabic ? 'أكاديمية الإنجليزية' : 'English Academy'}</p>
+              <p className="text-gray-500 text-sm">{t('certificates.academy_subtitle')}</p>
             </div>
 
             <div className="relative text-center w-full my-auto">
               <h2 className="text-lg font-medium text-gray-500 uppercase tracking-widest mb-2">
-                {isArabic ? 'شهادة إتمام' : 'Certificate of Completion'}
+                {t('certificates.completion')}
               </h2>
               <div className="w-24 h-0.5 bg-primary mx-auto mb-6" />
 
-              <p className="text-gray-600 mb-2">{isArabic ? 'يُ certify بأن' : 'This is to certify that'}</p>
+              <p className="text-gray-600 mb-2">{t('certificates.certifies_that')}</p>
               <h3 className="text-3xl font-bold text-gray-900 mb-4 border-b-2 border-primary/30 inline-block px-8 pb-1">
-                {isArabic ? certificate.user?.name || 'طالب' : certificate.user?.name || 'Student'}
+                {certificate.user?.name || t('certificates.student_fallback')}
               </h3>
               <p className="text-gray-600 mb-2">
-                {isArabic ? 'لقد أتم بنجاح كورس' : 'Has successfully completed the course'}
+                {t('certificates.completed_text')}
               </p>
               <h4 className="text-2xl font-bold text-primary mb-4">
-                {isArabic ? certificate.course?.titleAr : certificate.course?.title}
+                {certificate.course ? localize(certificate.course, 'title') : ''}
               </h4>
               <p className="text-gray-500 text-sm">{issuedDate}</p>
             </div>
@@ -116,18 +116,18 @@ export default function CertificateView() {
             <div className="relative w-full flex justify-between items-end mt-8">
               <div className="text-center">
                 <div className="w-40 border-b border-gray-400 mb-2" />
-                <p className="text-sm text-gray-500">{isArabic ? 'أحمد فares' : 'Ahmed Fares'}</p>
-                <p className="text-xs text-gray-400">{isArabic ? 'المدير' : 'Director'}</p>
+                <p className="text-sm text-gray-500">{i18n.language === 'ar' ? 'أحمد فares' : 'Ahmed Fares'}</p>
+                <p className="text-xs text-gray-400">{t('certificates.director')}</p>
               </div>
               <div className="text-center">
                 <div className="text-sm text-gray-500 mb-1">
-                  {isArabic ? 'رقم الشهادة' : 'Certificate No.'}
+                  {t('certificates.cert_number')}
                 </div>
                 <div className="font-mono font-bold text-primary">{certificate.certificateNumber}</div>
               </div>
               <div className="text-center">
                 <div className="w-40 border-b border-gray-400 mb-2" />
-                <p className="text-sm text-gray-500">{isArabic ? 'تاريخ الإصدار' : 'Issue Date'}</p>
+                <p className="text-sm text-gray-500">{t('certificates.issue_date')}</p>
                 <p className="text-xs text-gray-400">{issuedDate}</p>
               </div>
             </div>

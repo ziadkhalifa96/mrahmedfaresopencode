@@ -7,8 +7,7 @@ import { bookingsApi } from '../../services';
 import type { Booking } from '../../types';
 
 export default function MyBookings() {
-  const { t, i18n } = useTranslation();
-  const isArabic = i18n.language === 'ar';
+  const { t } = useTranslation();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -25,7 +24,7 @@ export default function MyBookings() {
   }, []);
 
   const handleCancel = async (id: number) => {
-    if (!confirm(isArabic ? 'هل تريد إلغاء الحجز؟' : 'Cancel this booking?')) return;
+    if (!confirm(t('bookings.cancel_confirm'))) return;
     try {
       await bookingsApi.cancel(id);
       setBookings(prev => prev.map(b => b.id === id ? { ...b, status: 'cancelled' } : b));
@@ -39,16 +38,16 @@ export default function MyBookings() {
       cancelled: 'bg-red-100 text-red-700',
     };
     const labels = {
-      pending: isArabic ? 'قيد الانتظار' : 'Pending',
-      confirmed: isArabic ? 'مؤكد' : 'Confirmed',
-      cancelled: isArabic ? 'ملغي' : 'Cancelled',
+      pending: t('common.pending'),
+      confirmed: t('common.confirmed'),
+      cancelled: t('common.cancelled'),
     };
     return <span className={`text-xs px-2 py-1 rounded-full ${styles[status as keyof typeof styles]}`}>{labels[status as keyof typeof labels]}</span>;
   };
 
   return (
     <>
-      <SEO title={isArabic ? 'حجوزاتي' : 'My Bookings'} />
+      <SEO title={t('seo.myBookings')} />
       <div>
         <h1 className="text-2xl font-bold text-gray-900 mb-8">{t('dashboard.myBookings')}</h1>
 
@@ -60,7 +59,7 @@ export default function MyBookings() {
           <div className="text-center py-20">
             <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 mb-2">
-              {isArabic ? 'لا توجد حجوزات' : 'No Bookings Yet'}
+              {t('bookings.empty')}
             </h3>
           </div>
         ) : (
@@ -82,7 +81,7 @@ export default function MyBookings() {
                     </div>
                     <div>
                       <div className="font-semibold text-gray-900">
-                        {booking.type === 'online' ? (isArabic ? 'حصة أونلاين' : 'Online Session') : (isArabic ? 'حصة أوفلاين' : 'Offline Session')}
+                        {booking.type === 'online' ? t('bookings.online') : t('bookings.offline')}
                       </div>
                       <div className="flex items-center gap-3 text-sm text-gray-600 mt-1">
                         <span className="flex items-center gap-1">

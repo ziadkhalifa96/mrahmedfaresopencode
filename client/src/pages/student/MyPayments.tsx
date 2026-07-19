@@ -7,8 +7,7 @@ import { paymentsApi } from '../../services';
 import type { Payment } from '../../types';
 
 export default function MyPayments() {
-  const { t, i18n } = useTranslation();
-  const isArabic = i18n.language === 'ar';
+  const { t } = useTranslation();
   const [payments, setPayments] = useState<Payment[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -47,9 +46,9 @@ export default function MyPayments() {
       rejected: 'bg-red-100 text-red-700',
     };
     const labels = {
-      pending: isArabic ? 'قيد المراجعة' : 'Pending',
-      approved: isArabic ? 'مقبول' : 'Approved',
-      rejected: isArabic ? 'مرفوض' : 'Rejected',
+      pending: t('common.pending'),
+      approved: t('common.approved'),
+      rejected: t('common.rejected'),
     };
     const icons = { pending: Clock, approved: CheckCircle, rejected: XCircle };
     const Icon = icons[status as keyof typeof icons];
@@ -63,13 +62,13 @@ export default function MyPayments() {
 
   return (
     <>
-      <SEO title={isArabic ? 'مدفوعاتي' : 'My Payments'} />
+      <SEO title={t('seo.myPayments')} />
       <div>
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-2xl font-bold text-gray-900">{t('dashboard.myPayments')}</h1>
           <button onClick={() => setShowForm(!showForm)} className="btn-primary">
             <Upload className="w-4 h-4" />
-            {isArabic ? 'دفع جديد' : 'New Payment'}
+            {t('payments.new_payment')}
           </button>
         </div>
 
@@ -80,19 +79,19 @@ export default function MyPayments() {
             className="card mb-8"
           >
             <h2 className="text-lg font-semibold text-gray-900 mb-4">
-              {isArabic ? 'إرسال إثبات الدفع' : 'Submit Payment Proof'}
+              {t('payments.submit_proof')}
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    {isArabic ? 'المبلغ' : 'Amount (EGP)'}
+                    {t('payments.amount')}
                   </label>
                   <input type="number" name="amount" className="input" required min="1" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    {isArabic ? 'طريقة الدفع' : 'Payment Method'}
+                    {t('payments.payment_method')}
                   </label>
                   <select name="method" className="input" required>
                     <option value="vodafone_cash">Vodafone Cash</option>
@@ -102,20 +101,20 @@ export default function MyPayments() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {isArabic ? 'رقم المرسل' : 'Sender Phone'}
+                  {t('payments.sender_phone')}
                 </label>
                 <input type="tel" name="senderPhone" className="input" required placeholder="01XXXXXXXXX" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {isArabic ? 'صورة إثبات الدفع' : 'Payment Proof Image'}
+                  {t('payments.proof_image')}
                 </label>
                 <input type="file" name="proofImage" accept="image/*" className="input" required />
               </div>
               <div className="flex gap-3">
                 <button type="submit" disabled={submitting} className="btn-primary">
                   {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-                  {isArabic ? 'إرسال' : 'Submit'}
+                  {t('common.submit')}
                 </button>
                 <button type="button" onClick={() => setShowForm(false)} className="btn-outline">
                   {t('common.cancel')}
@@ -133,7 +132,7 @@ export default function MyPayments() {
           <div className="text-center py-20">
             <CreditCard className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 mb-2">
-              {isArabic ? 'لا توجد مدفوعات' : 'No Payments Yet'}
+              {t('payments.no_payments')}
             </h3>
           </div>
         ) : (

@@ -5,10 +5,10 @@ import { motion } from 'motion/react';
 import { Users, BookOpen, CreditCard, Calendar, Award, FileText } from 'lucide-react';
 import SEO from '../../components/ui/SEO';
 import { adminApi } from '../../services';
+import { localize } from '../../utils/localize';
 
 export default function AdminDashboard() {
-  const { t, i18n } = useTranslation();
-  const isArabic = i18n.language === 'ar';
+  const { t } = useTranslation();
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -31,22 +31,22 @@ export default function AdminDashboard() {
   const s = stats?.stats;
 
   const statCards = [
-    { icon: Users, label: t('admin.totalUsers'), value: s?.totalUsers || 0, sub: `+${s?.newUsers || 0} ${isArabic ? 'هذا الشهر' : 'this month'}`, color: 'bg-blue-100 text-blue-600' },
+    { icon: Users, label: t('admin.totalUsers'), value: s?.totalUsers || 0, sub: `+${s?.newUsers || 0} ${t('common.this_month')}`, color: 'bg-blue-100 text-blue-600' },
     { icon: BookOpen, label: t('admin.totalCourses'), value: s?.totalCourses || 0, color: 'bg-green-100 text-green-600' },
-    { icon: CreditCard, label: t('admin.totalRevenue'), value: `${s?.totalRevenue || 0} EGP`, sub: `+${s?.recentRevenue || 0} ${isArabic ? 'هذا الشهر' : 'this month'}`, color: 'bg-yellow-100 text-yellow-600' },
-    { icon: Calendar, label: t('admin.totalBookings'), value: s?.totalBookings || 0, sub: `${s?.pendingBookings || 0} ${isArabic ? 'قيد الانتظار' : 'pending'}`, color: 'bg-purple-100 text-purple-600' },
+    { icon: CreditCard, label: t('admin.totalRevenue'), value: `${s?.totalRevenue || 0} EGP`, sub: `+${s?.recentRevenue || 0} ${t('common.this_month')}`, color: 'bg-yellow-100 text-yellow-600' },
+    { icon: Calendar, label: t('admin.totalBookings'), value: s?.totalBookings || 0, sub: `${s?.pendingBookings || 0} ${t('common.pending')}`, color: 'bg-purple-100 text-purple-600' },
   ];
 
   const pendingCards = [
     { icon: CreditCard, label: t('admin.pendingPayments'), value: s?.pendingPayments || 0, to: '/admin/payments', color: 'bg-orange-100 text-orange-600' },
-    { icon: Users, label: t('admin.totalEnrollments'), value: s?.totalEnrollments || 0, sub: `+${s?.recentEnrollments || 0} ${isArabic ? 'هذا الشهر' : 'this month'}`, to: '/admin/courses', color: 'bg-indigo-100 text-indigo-600' },
+    { icon: Users, label: t('admin.totalEnrollments'), value: s?.totalEnrollments || 0, sub: `+${s?.recentEnrollments || 0} ${t('common.this_month')}`, to: '/admin/courses', color: 'bg-indigo-100 text-indigo-600' },
     { icon: Award, label: t('admin.totalCertificates'), value: s?.totalCertificates || 0, to: '/admin/users', color: 'bg-pink-100 text-pink-600' },
     { icon: FileText, label: t('admin.totalBlogPosts'), value: s?.totalBlogPosts || 0, to: '/admin/blog', color: 'bg-teal-100 text-teal-600' },
   ];
 
   return (
     <>
-      <SEO title={isArabic ? 'لوحة تحكم الإدارة' : 'Admin Dashboard'} />
+      <SEO title={t('seo.adminDashboard')} />
       <div>
         <h1 className="text-2xl font-bold text-gray-900 mb-8">{t('admin.dashboard')}</h1>
 
@@ -79,7 +79,7 @@ export default function AdminDashboard() {
         <div className="grid lg:grid-cols-2 gap-8">
           <div className="card">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">
-              {isArabic ? 'آخر التسجيلات' : 'Recent Enrollments'}
+              {t('admin.recent_enrollments')}
             </h2>
             {stats?.recentEnrollments?.length > 0 ? (
               <div className="space-y-3">
@@ -87,7 +87,7 @@ export default function AdminDashboard() {
                   <div key={e.id} className="flex items-center justify-between py-2 border-b last:border-0">
                     <div>
                       <div className="text-sm font-medium text-gray-900">{e.user?.name}</div>
-                      <div className="text-xs text-gray-500">{isArabic ? e.course?.titleAr : e.course?.title}</div>
+                      <div className="text-xs text-gray-500">{localize(e.course, 'title')}</div>
                     </div>
                     <div className="text-xs text-gray-500">{new Date(e.createdAt).toLocaleDateString()}</div>
                   </div>
@@ -100,7 +100,7 @@ export default function AdminDashboard() {
 
           <div className="card">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">
-              {isArabic ? 'مدفوعات قيد المراجعة' : 'Pending Payments'}
+              {t('admin.recent_pending_payments')}
             </h2>
             {stats?.recentPayments?.length > 0 ? (
               <div className="space-y-3">
@@ -110,7 +110,7 @@ export default function AdminDashboard() {
                       <div className="text-sm font-medium text-gray-900">{p.user?.name}</div>
                       <div className="text-xs text-gray-500">{p.amount} EGP - {p.senderPhone}</div>
                     </div>
-                    <Link to="/admin/payments" className="text-xs text-primary hover:underline">{isArabic ? 'مراجعة' : 'Review'}</Link>
+                    <Link to="/admin/payments" className="text-xs text-primary hover:underline">{t('admin.review')}</Link>
                   </div>
                 ))}
               </div>

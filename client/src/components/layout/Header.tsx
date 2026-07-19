@@ -83,7 +83,7 @@ export default function Header() {
             <button
               onClick={toggleTheme}
               className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-              title={isArabic ? ui('header.dark_mode') : ui('header.light_mode')}
+              title={theme === 'dark' ? ui('header.light_mode') : ui('header.dark_mode')}
             >
               {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
@@ -92,7 +92,7 @@ export default function Header() {
             <button
               onClick={toggleLanguage}
               className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-              title={isArabic ? 'English' : 'العربية'}
+              title={isArabic ? ui('header.switch_to_english') : ui('header.switch_to_arabic')}
             >
               <Globe className="w-5 h-5" />
             </button>

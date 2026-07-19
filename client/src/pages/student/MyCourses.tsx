@@ -5,11 +5,11 @@ import { motion } from 'motion/react';
 import { BookOpen, Clock, CheckCircle, Loader2 } from 'lucide-react';
 import SEO from '../../components/ui/SEO';
 import { enrollmentsApi } from '../../services';
+import { localize } from '../../utils/localize';
 import type { Enrollment } from '../../types';
 
 export default function MyCourses() {
-  const { t, i18n } = useTranslation();
-  const isArabic = i18n.language === 'ar';
+  const { t } = useTranslation();
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -27,7 +27,7 @@ export default function MyCourses() {
 
   return (
     <>
-      <SEO title={isArabic ? 'كورساتي' : 'My Courses'} />
+      <SEO title={t('seo.myCourses')} />
       <div>
         <h1 className="text-2xl font-bold text-gray-900 mb-8">{t('dashboard.myCourses')}</h1>
 
@@ -39,20 +39,20 @@ export default function MyCourses() {
           <div className="text-center py-20">
             <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 mb-2">
-              {isArabic ? 'لم تسجل في أي كورس بعد' : 'No courses enrolled yet'}
+              {t('student.no_enrollments')}
             </h3>
             <p className="text-gray-600 mb-6">
-              {isArabic ? 'ابدأ رحلة التعلم الآن' : 'Start your learning journey now'}
+              {t('student.start_learning')}
             </p>
             <Link to="/courses" className="btn-primary">
-              {isArabic ? 'تصفح الكورسات' : 'Browse Courses'}
+              {t('dashboard.browse_courses')}
             </Link>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 gap-6">
             {enrollments.map((enrollment, index) => {
               const course = enrollment.course;
-              const title = isArabic ? course?.titleAr : course?.title;
+              const title = course ? localize(course, 'title') : '';
               return (
                 <motion.div
                   key={enrollment.id}
@@ -81,9 +81,9 @@ export default function MyCourses() {
                               : 'bg-primary/10 text-primary'
                           }`}>
                             {enrollment.status === 'completed' ? (
-                              <><CheckCircle className="w-3 h-3" /> {isArabic ? 'مكتمل' : 'Completed'}</>
+                              <><CheckCircle className="w-3 h-3" /> {t('student.completed')}</>
                             ) : (
-                              <><Clock className="w-3 h-3" /> {isArabic ? 'جاري' : 'In Progress'}</>
+                              <><Clock className="w-3 h-3" /> {t('student.in_progress')}</>
                             )}
                           </span>
                         </div>

@@ -6,8 +6,7 @@ import SEO from '../../components/ui/SEO';
 import { adminApi } from '../../services';
 
 export default function AdminCourses() {
-  const { t, i18n } = useTranslation();
-  const isArabic = i18n.language === 'ar';
+  const { t } = useTranslation();
   const [courses, setCourses] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -51,7 +50,7 @@ export default function AdminCourses() {
   };
 
   const handleDeleteCourse = async (id: number) => {
-    if (!confirm(isArabic ? 'هل تريد حذف هذا الكورس؟' : 'Delete this course?')) return;
+    if (!confirm(t('admin.delete_course_confirm'))) return;
     try { await adminApi.courses.delete(id); fetchCourses(); } catch {}
   };
 
@@ -100,7 +99,7 @@ export default function AdminCourses() {
   };
 
   const handleDeleteChapter = async (chapterId: number, courseId: number) => {
-    if (!confirm(isArabic ? 'هل تريد حذف هذا الفصل؟' : 'Delete this chapter?')) return;
+    if (!confirm(t('admin.delete_chapter_confirm'))) return;
     try {
       await adminApi.courses.deleteChapter(chapterId);
       const response = await adminApi.courses.getOne(courseId);
@@ -109,7 +108,7 @@ export default function AdminCourses() {
   };
 
   const handleDeleteLesson = async (lessonId: number, courseId: number) => {
-    if (!confirm(isArabic ? 'هل تريد حذف هذا الدرس؟' : 'Delete this lesson?')) return;
+    if (!confirm(t('admin.delete_lesson_confirm'))) return;
     try {
       await adminApi.courses.deleteLesson(lessonId);
       const response = await adminApi.courses.getOne(courseId);
@@ -119,33 +118,33 @@ export default function AdminCourses() {
 
   return (
     <>
-      <SEO title={isArabic ? 'الكورسات' : 'Courses'} />
+      <SEO title={t('seo.adminCourses')} />
       <div>
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-gray-900">{t('admin.courses')}</h1>
-          <button onClick={() => { setShowForm(!showForm); setEditingCourse(null); }} className="btn-primary"><Plus className="w-4 h-4" /> {isArabic ? 'إضافة كورس' : 'Add Course'}</button>
+          <button onClick={() => { setShowForm(!showForm); setEditingCourse(null); }} className="btn-primary"><Plus className="w-4 h-4" /> {t('admin.add_course')}</button>
         </div>
 
         {showForm && (
           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="card mb-6">
-            <h2 className="text-lg font-semibold mb-4">{editingCourse ? (isArabic ? 'تعديل الكورس' : 'Edit Course') : (isArabic ? 'إضافة كورس' : 'New Course')}</h2>
+            <h2 className="text-lg font-semibold mb-4">{editingCourse ? t('admin.edit_course') : t('admin.new_course')}</h2>
             <form onSubmit={handleCourseSubmit} className="space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">Title</label><input type="text" name="title" defaultValue={editingCourse?.title} className="input" required /></div>
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">العنوان بالعربي</label><input type="text" name="titleAr" defaultValue={editingCourse?.titleAr} className="input" required /></div>
+                <div><label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.title_en_label')}</label><input type="text" name="title" defaultValue={editingCourse?.title} className="input" required /></div>
+                <div><label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.title_ar_label')}</label><input type="text" name="titleAr" defaultValue={editingCourse?.titleAr} className="input" required /></div>
               </div>
               <div className="grid md:grid-cols-2 gap-4">
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">Description</label><textarea name="description" defaultValue={editingCourse?.description} className="input" rows={3} required /></div>
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">الوصف بالعربي</label><textarea name="descriptionAr" defaultValue={editingCourse?.descriptionAr} className="input" rows={3} required /></div>
+                <div><label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.description_en')}</label><textarea name="description" defaultValue={editingCourse?.description} className="input" rows={3} required /></div>
+                <div><label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.description_ar')}</label><textarea name="descriptionAr" defaultValue={editingCourse?.descriptionAr} className="input" rows={3} required /></div>
               </div>
               <div className="grid md:grid-cols-3 gap-4">
-                <div><label className="block text-sm font-medium text-gray-700 mb-1">{isArabic ? 'السعر (ج.م)' : 'Price (EGP)'}</label><input type="number" name="price" defaultValue={editingCourse?.price || 0} className="input" min="0" step="0.01" /></div>
-                <div className="flex items-center gap-2 mt-6"><input type="checkbox" name="isFree" defaultChecked={editingCourse?.isFree} className="w-4 h-4" /><label className="text-sm">{isArabic ? 'مجاني' : 'Free'}</label></div>
-                <div className="flex items-center gap-2 mt-6"><input type="checkbox" name="isPublished" defaultChecked={editingCourse?.isPublished} className="w-4 h-4" /><label className="text-sm">{isArabic ? 'منشور' : 'Published'}</label></div>
+                <div><label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.price_egp')}</label><input type="number" name="price" defaultValue={editingCourse?.price || 0} className="input" min="0" step="0.01" /></div>
+                <div className="flex items-center gap-2 mt-6"><input type="checkbox" name="isFree" defaultChecked={editingCourse?.isFree} className="w-4 h-4" /><label className="text-sm">{t('admin.free')}</label></div>
+                <div className="flex items-center gap-2 mt-6"><input type="checkbox" name="isPublished" defaultChecked={editingCourse?.isPublished} className="w-4 h-4" /><label className="text-sm">{t('common.published')}</label></div>
               </div>
-              <div><label className="block text-sm font-medium text-gray-700 mb-1">{isArabic ? 'الصورة المصغرة' : 'Thumbnail'}</label><input type="file" name="thumbnail" accept="image/*" className="input" /></div>
+              <div><label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.thumbnail')}</label><input type="file" name="thumbnail" accept="image/*" className="input" /></div>
               <div className="flex gap-3">
-                <button type="submit" className="btn-primary">{editingCourse ? t('common.save') : (isArabic ? 'إنشاء' : 'Create')}</button>
+                <button type="submit" className="btn-primary">{editingCourse ? t('common.save') : t('common.create')}</button>
                 <button type="button" onClick={() => { setShowForm(false); setEditingCourse(null); }} className="btn-outline">{t('common.cancel')}</button>
               </div>
             </form>
@@ -175,12 +174,12 @@ export default function AdminCourses() {
                       </div>
                       <div>
                         <div className="font-medium text-gray-900">{course.title}</div>
-                        <div className="text-sm text-gray-500">{course.titleAr} - {course.chapterCount || 0} {isArabic ? 'فصول' : 'chapters'}</div>
+                        <div className="text-sm text-gray-500">{course.titleAr} - {course.chapterCount || 0} {t('courses.chapters_count')}</div>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
                       <span className={`text-xs px-2 py-1 rounded-full ${course.isPublished ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}`}>
-                        {course.isPublished ? (isArabic ? 'منشور' : 'Published') : (isArabic ? 'مسودة' : 'Draft')}
+                        {course.isPublished ? t('common.published') : t('common.draft')}
                       </span>
                       <button onClick={() => { setEditingCourse(course); setShowForm(true); }} className="p-1 text-gray-400 hover:text-primary"><Edit className="w-4 h-4" /></button>
                       <button onClick={() => handleDeleteCourse(course.id)} className="p-1 text-gray-400 hover:text-red-500"><Trash2 className="w-4 h-4" /></button>
@@ -193,18 +192,18 @@ export default function AdminCourses() {
                   {expandedCourse === course.id && courseDetail && (
                     <div className="mt-4 pt-4 border-t">
                       <div className="flex items-center justify-between mb-3">
-                        <h3 className="font-medium text-gray-900">{isArabic ? 'الفصول والدروس' : 'Chapters & Lessons'}</h3>
-                        <button onClick={() => setShowChapterForm(course.id)} className="btn-primary text-sm py-1"><Plus className="w-3 h-3" /> {isArabic ? 'إضافة فصل' : 'Add Chapter'}</button>
+                        <h3 className="font-medium text-gray-900">{t('admin.chapters_lessons')}</h3>
+                        <button onClick={() => setShowChapterForm(course.id)} className="btn-primary text-sm py-1"><Plus className="w-3 h-3" /> {t('admin.add_chapter')}</button>
                       </div>
 
                       {showChapterForm === course.id && (
                         <form onSubmit={(e) => handleChapterSubmit(e, course.id)} className="bg-gray-50 rounded-lg p-4 mb-3 space-y-3">
                           <div className="grid grid-cols-2 gap-3">
-                            <input type="text" name="title" placeholder="Chapter Title" className="input text-sm" required />
-                            <input type="text" name="titleAr" placeholder="عنوان الفصل" className="input text-sm" required />
+                            <input type="text" name="title" placeholder={t('admin.chapter_title')} className="input text-sm" required />
+                            <input type="text" name="titleAr" placeholder={t('admin.chapter_title_ar')} className="input text-sm" required />
                           </div>
                           <div className="flex items-center gap-3">
-                            <input type="number" name="orderIndex" placeholder="Order" className="input text-sm w-24" defaultValue={0} />
+                            <input type="number" name="orderIndex" placeholder={t('admin.order')} className="input text-sm w-24" defaultValue={0} />
                             <button type="submit" className="btn-primary text-sm py-1">{t('common.save')}</button>
                             <button type="button" onClick={() => setShowChapterForm(null)} className="btn-outline text-sm py-1">{t('common.cancel')}</button>
                           </div>
@@ -219,7 +218,7 @@ export default function AdminCourses() {
                               <span className="text-gray-400 text-sm">({chapter.titleAr})</span>
                             </div>
                             <div className="flex items-center gap-2">
-                              <button onClick={() => setShowLessonForm(chapter.id)} className="text-xs text-primary hover:underline">+ {isArabic ? 'درس' : 'Lesson'}</button>
+                              <button onClick={() => setShowLessonForm(chapter.id)} className="text-xs text-primary hover:underline">+ {t('admin.add_lesson')}</button>
                               <button onClick={() => handleDeleteChapter(chapter.id, course.id)} className="p-1 text-gray-400 hover:text-red-500"><Trash2 className="w-3 h-3" /></button>
                             </div>
                           </div>
@@ -227,20 +226,20 @@ export default function AdminCourses() {
                           {showLessonForm === chapter.id && (
                             <form onSubmit={(e) => handleLessonSubmit(e, chapter.id)} className="bg-gray-50 rounded-lg p-3 mb-2 space-y-2 ml-4">
                               <div className="grid grid-cols-2 gap-2">
-                                <input type="text" name="title" placeholder="Lesson Title" className="input text-sm" required />
-                                <input type="text" name="titleAr" placeholder="عنوان الدرس" className="input text-sm" required />
+                                <input type="text" name="title" placeholder={t('admin.lesson_title')} className="input text-sm" required />
+                                <input type="text" name="titleAr" placeholder={t('admin.lesson_title_ar')} className="input text-sm" required />
                               </div>
                               <div className="grid grid-cols-3 gap-2">
                                 <select name="type" className="input text-sm">
-                                  <option value="text">Text</option>
-                                  <option value="video">Video</option>
-                                  <option value="quiz">Quiz</option>
+                                  <option value="text">{t('admin.lesson_type_text')}</option>
+                                  <option value="video">{t('admin.lesson_type_video')}</option>
+                                  <option value="quiz">{t('admin.lesson_type_quiz')}</option>
                                 </select>
-                                <input type="number" name="duration" placeholder="Duration (min)" className="input text-sm" />
-                                <input type="text" name="videoUrl" placeholder="Video URL" className="input text-sm" />
+                                <input type="number" name="duration" placeholder={t('admin.duration_min')} className="input text-sm" />
+                                <input type="text" name="videoUrl" placeholder={t('admin.video_url')} className="input text-sm" />
                               </div>
-                              <textarea name="content" placeholder="Content" className="input text-sm" rows={2} />
-                              <textarea name="contentAr" placeholder="المحتوى بالعربي" className="input text-sm" rows={2} />
+                              <textarea name="content" placeholder={t('admin.content_en')} className="input text-sm" rows={2} />
+                              <textarea name="contentAr" placeholder={t('admin.content_ar')} className="input text-sm" rows={2} />
                               <div className="flex items-center gap-3">
                                 <button type="submit" className="btn-primary text-sm py-1">{t('common.save')}</button>
                                 <button type="button" onClick={() => setShowLessonForm(null)} className="btn-outline text-sm py-1">{t('common.cancel')}</button>
@@ -255,7 +254,7 @@ export default function AdminCourses() {
                                 <span>{lesson.title}</span>
                                 <span className="text-xs text-gray-400">({lesson.titleAr})</span>
                                 <span className="text-xs bg-gray-100 px-1.5 py-0.5 rounded">{lesson.type}</span>
-                                {lesson.isFree && <span className="text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded">Free</span>}
+                                {lesson.isFree && <span className="text-xs bg-green-100 text-green-700 px-1.5 py-0.5 rounded">{t('courses.free')}</span>}
                               </div>
                               <button onClick={() => handleDeleteLesson(lesson.id, course.id)} className="p-1 text-gray-400 hover:text-red-500"><Trash2 className="w-3 h-3" /></button>
                             </div>

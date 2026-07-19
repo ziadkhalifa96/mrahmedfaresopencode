@@ -7,8 +7,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { authApi } from '../../services';
 
 export default function Profile() {
-  const { t, i18n } = useTranslation();
-  const isArabic = i18n.language === 'ar';
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -32,7 +31,7 @@ export default function Profile() {
 
   return (
     <>
-      <SEO title={isArabic ? 'الملف الشخصي' : 'Profile'} />
+      <SEO title={t('seo.profile')} />
       <div>
         <h1 className="text-2xl font-bold text-gray-900 mb-8">{t('dashboard.profile')}</h1>
 
@@ -54,26 +53,26 @@ export default function Profile() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                {isArabic ? 'الاسم' : 'Name'}
+                {t('profile_page.name')}
               </label>
               <input type="text" name="name" defaultValue={user?.name} className="input" required />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                {isArabic ? 'البريد الإلكتروني' : 'Email'}
+                {t('profile_page.email')}
               </label>
               <input type="email" defaultValue={user?.email} className="input bg-gray-50" disabled />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                {isArabic ? 'رقم الهاتف' : 'Phone'}
+                {t('profile_page.phone')}
               </label>
               <input type="tel" name="phone" defaultValue={user?.phone} className="input" required />
             </div>
 
             {success && (
               <div className="bg-success/10 text-success px-4 py-2 rounded-lg text-sm">
-                {isArabic ? 'تم الحفظ بنجاح' : 'Saved successfully'}
+                {t('common.saved_successfully')}
               </div>
             )}
 

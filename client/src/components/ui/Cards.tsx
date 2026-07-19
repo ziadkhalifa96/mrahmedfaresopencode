@@ -1,6 +1,8 @@
 import { Link } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { LucideIcon } from 'lucide-react';
+import { localize } from '../../utils/localize';
 
 interface FeatureCardProps {
   icon: LucideIcon;
@@ -61,10 +63,9 @@ interface CourseCardProps {
 }
 
 export function CourseCard({ title, titleAr, description, descriptionAr, thumbnail, price, isFree, slug }: CourseCardProps) {
-  const dir = document.documentElement.dir || 'ltr';
-  const isArabic = dir === 'rtl';
-  const displayTitle = isArabic ? titleAr : title;
-  const displayDesc = isArabic ? descriptionAr : description;
+  const { t } = useTranslation();
+  const displayTitle = localize({ title, titleAr }, 'title');
+  const displayDesc = localize({ description, descriptionAr }, 'description');
 
   return (
     <motion.div
@@ -96,10 +97,10 @@ export function CourseCard({ title, titleAr, description, descriptionAr, thumbna
         <p className="text-gray-600 text-sm mb-4 line-clamp-2">{displayDesc}</p>
         <div className="flex items-center justify-between">
           <span className={`text-lg font-bold ${isFree ? 'text-success' : 'text-primary'}`}>
-            {isFree ? (isArabic ? 'مجاني' : 'Free') : `${price} EGP`}
+            {isFree ? t('courses.free') : `${price} EGP`}
           </span>
           <span className="text-sm text-primary group-hover:translate-x-1 transition-transform">
-            {isArabic ? 'عرض' : 'View'} →
+            {t('courses.view')} →
           </span>
         </div>
       </Link>

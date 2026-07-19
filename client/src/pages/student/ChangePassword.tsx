@@ -6,8 +6,7 @@ import SEO from '../../components/ui/SEO';
 import { authApi } from '../../services';
 
 export default function ChangePassword() {
-  const { i18n } = useTranslation();
-  const isArabic = i18n.language === 'ar';
+  const { t } = useTranslation();
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
@@ -23,7 +22,7 @@ export default function ChangePassword() {
     const confirmPassword = formData.get('confirmPassword') as string;
 
     if (newPassword !== confirmPassword) {
-      setError(isArabic ? 'كلمتا المرور غير متطابقتين' : 'Passwords do not match');
+      setError(t('password.mismatch'));
       setSaving(false);
       return;
     }
@@ -37,7 +36,7 @@ export default function ChangePassword() {
       (e.target as HTMLFormElement).reset();
       setTimeout(() => setSuccess(false), 3000);
     } catch (err: any) {
-      setError(err.response?.data?.message || (isArabic ? 'حدث خطأ' : 'An error occurred'));
+      setError(err.response?.data?.message || t('password.error'));
     } finally {
       setSaving(false);
     }
@@ -67,9 +66,9 @@ export default function ChangePassword() {
 
   return (
     <>
-      <SEO title={isArabic ? 'تغيير كلمة المرور' : 'Change Password'} />
+      <SEO title={t('seo.changePassword')} />
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-8">{isArabic ? 'تغيير كلمة المرور' : 'Change Password'}</h1>
+        <h1 className="text-2xl font-bold text-gray-900 mb-8">{t('password.title')}</h1>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="card max-w-2xl">
           <div className="flex items-center gap-3 mb-6 pb-6 border-b">
@@ -77,19 +76,19 @@ export default function ChangePassword() {
               <Lock className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <h2 className="font-semibold text-gray-900">{isArabic ? 'الأمان' : 'Security'}</h2>
-              <p className="text-sm text-gray-600">{isArabic ? 'حدّث كلمة المرور الخاصة بك' : 'Update your password'}</p>
+              <h2 className="font-semibold text-gray-900">{t('password.security')}</h2>
+              <p className="text-sm text-gray-600">{t('password.update_subtitle')}</p>
             </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <PasswordInput name="currentPassword" label={isArabic ? 'كلمة المرور الحالية' : 'Current Password'} field="current" />
-            <PasswordInput name="newPassword" label={isArabic ? 'كلمة المرور الجديدة' : 'New Password'} field="new" />
-            <PasswordInput name="confirmPassword" label={isArabic ? 'تأكيد كلمة المرور' : 'Confirm Password'} field="confirm" />
+            <PasswordInput name="currentPassword" label={t('password.current')} field="current" />
+            <PasswordInput name="newPassword" label={t('password.new')} field="new" />
+            <PasswordInput name="confirmPassword" label={t('password.confirm')} field="confirm" />
 
             {success && (
               <div className="bg-success/10 text-success px-4 py-2 rounded-lg text-sm">
-                {isArabic ? 'تم تغيير كلمة المرور بنجاح' : 'Password changed successfully'}
+                {t('password.changed')}
               </div>
             )}
             {error && (
@@ -98,7 +97,7 @@ export default function ChangePassword() {
 
             <button type="submit" disabled={saving} className="btn-primary">
               {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-              {isArabic ? 'تغيير كلمة المرور' : 'Change Password'}
+              {t('password.title')}
             </button>
           </form>
         </motion.div>

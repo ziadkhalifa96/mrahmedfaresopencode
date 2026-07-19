@@ -6,8 +6,7 @@ import SEO from '../../components/ui/SEO';
 import { adminApi } from '../../services';
 
 export default function AdminAnnouncements() {
-  const { t, i18n } = useTranslation();
-  const isArabic = i18n.language === 'ar';
+  const { t } = useTranslation();
   const [announcements, setAnnouncements] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
@@ -47,7 +46,7 @@ export default function AdminAnnouncements() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm(isArabic ? 'هل تريد حذف هذا الإعلان؟' : 'Delete this announcement?')) return;
+    if (!confirm(t('admin.delete_announcement_confirm'))) return;
     try { await adminApi.announcements.delete(id); fetchAnnouncements(); } catch {}
   };
 
@@ -57,23 +56,23 @@ export default function AdminAnnouncements() {
 
   return (
     <>
-      <SEO title={isArabic ? 'الإعلانات' : 'Announcements'} />
+      <SEO title={t('seo.adminAnnouncements')} />
       <div>
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-gray-900">{t('admin.announcements')}</h1>
-          <button onClick={() => { setShowForm(!showForm); setEditing(null); }} className="btn-primary"><Plus className="w-4 h-4" /> {isArabic ? 'إضافة إعلان' : 'New Announcement'}</button>
+          <button onClick={() => { setShowForm(!showForm); setEditing(null); }} className="btn-primary"><Plus className="w-4 h-4" /> {t('announcements.new_announcement')}</button>
         </div>
 
         {showForm && (
           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="card mb-6">
-            <h2 className="text-lg font-semibold mb-4">{editing ? (isArabic ? 'تعديل الإعلان' : 'Edit') : (isArabic ? 'إعلان جديد' : 'New')}</h2>
+            <h2 className="text-lg font-semibold mb-4">{editing ? t('announcements.edit_announcement') : t('announcements.new_announcement')}</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div><label className="block text-sm font-medium text-gray-700 mb-1">Message</label><input type="text" name="message" defaultValue={editing?.message} className="input" required /></div>
-              <div><label className="block text-sm font-medium text-gray-700 mb-1">الرسالة بالعربي</label><input type="text" name="messageAr" defaultValue={editing?.messageAr} className="input" required /></div>
-              <div><label className="block text-sm font-medium text-gray-700 mb-1">{isArabic ? 'رابط (اختياري)' : 'Link (optional)'}</label><input type="url" name="link" defaultValue={editing?.link} className="input" /></div>
-              <div className="flex items-center gap-2"><input type="checkbox" name="isActive" defaultChecked={editing?.isActive ?? true} className="w-4 h-4" /><label className="text-sm">{isArabic ? 'نشط' : 'Active'}</label></div>
+              <div><label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.message_en')}</label><input type="text" name="message" defaultValue={editing?.message} className="input" required /></div>
+              <div><label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.message_ar')}</label><input type="text" name="messageAr" defaultValue={editing?.messageAr} className="input" required /></div>
+              <div><label className="block text-sm font-medium text-gray-700 mb-1">{t('announcements.link_optional')}</label><input type="url" name="link" defaultValue={editing?.link} className="input" /></div>
+              <div className="flex items-center gap-2"><input type="checkbox" name="isActive" defaultChecked={editing?.isActive ?? true} className="w-4 h-4" /><label className="text-sm">{t('common.active')}</label></div>
               <div className="flex gap-3">
-                <button type="submit" className="btn-primary">{editing ? t('common.save') : (isArabic ? 'إنشاء' : 'Create')}</button>
+                <button type="submit" className="btn-primary">{editing ? t('common.save') : t('common.create')}</button>
                 <button type="button" onClick={() => { setShowForm(false); setEditing(null); }} className="btn-outline">{t('common.cancel')}</button>
               </div>
             </form>

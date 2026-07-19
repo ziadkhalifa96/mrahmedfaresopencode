@@ -184,7 +184,25 @@
     },
     "notFound": {
       "title": "الصفحة غير موجودة"
-    }
+    },
+    "profile": "الملف الشخصي",
+    "changePassword": "تغيير كلمة المرور",
+    "myCertificates": "شهاداتي",
+    "myPayments": "مدفوعاتي",
+    "notifications": "الإشعارات",
+    "myBookings": "حجوزاتي",
+    "myCourses": "كورساتي",
+    "dashboard": "لوحة التحكم",
+    "adminDashboard": "لوحة تحكم الإدارة",
+    "adminCourses": "الكورسات",
+    "adminBlog": "المدونة",
+    "adminAnnouncements": "الإعلانات",
+    "adminBookings": "الحجوزات",
+    "adminSettings": "الإعدادات",
+    "adminExams": "الامتحانات",
+    "adminNotifications": "إرسال إشعارات",
+    "adminPayments": "المدفوعات",
+    "adminUsers": "المستخدمين"
   },
   "courses": {
     "hero_title": "الكورسات",
@@ -341,6 +359,8 @@
     "dark_mode": "الوضع الليلي",
     "light_mode": "الوضع النهاري",
     "language_toggle": "تبديل اللغة",
+    "switch_to_english": "التبديل إلى الإنجليزية",
+    "switch_to_arabic": "التبديل إلى العربية",
     "academy_name": "أكاديمية أحمد فares"
   },
   "admin": {
@@ -458,7 +478,17 @@
     "video_url": "رابط الفيديو",
     "lesson_type_text": "نص",
     "lesson_type_video": "فيديو",
-    "lesson_type_quiz": "اختبار"
+    "lesson_type_quiz": "اختبار",
+    "delete_course_confirm": "هل تريد حذف هذا الكورس؟",
+    "delete_chapter_confirm": "هل تريد حذف هذا الفصل؟",
+    "delete_lesson_confirm": "هل تريد حذف هذا الدرس؟",
+    "delete_post_confirm": "هل تريد حذف هذا المقال؟",
+    "delete_booking_confirm": "هل تريد حذف هذا الحجز؟",
+    "delete_user_confirm": "هل تريد حذف هذا المستخدم؟",
+    "delete_exam_confirm": "هل تريد حذف هذا الامتحان؟",
+    "delete_question_confirm": "هل تريد حذف هذا السؤال؟",
+    "delete_announcement_confirm": "هل تريد حذف هذا الإعلان؟",
+    "invalid_options_format": "صيغة الخيارات غير صحيحة"
   },
   "payments": {
     "new_payment": "دفع جديد",
@@ -482,13 +512,52 @@
     "link_optional": "رابط (اختياري)",
     "delete_confirm": "هل تريد حذف هذا الإعلان؟"
   },
+  "bookings": {
+    "empty": "لا توجد حجوزات",
+    "online": "حصة أونلاين",
+    "offline": "حصة أوفلاين",
+    "cancel_confirm": "هل تريد إلغاء الحجز؟"
+  },
   "notifications_page": {
-    "no_notifications": "لا توجد إشعارات بعد"
+    "no_notifications": "لا توجد إشعارات بعد",
+    "unread": "إشعار غير مقروء",
+    "mark_all_read": "تحديد الكل كمقروء",
+    "empty": "لا توجد إشعارات"
   },
   "profile_page": {
     "profile_title": "الملف الشخصي",
     "name": "الاسم",
     "email": "البريد الإلكتروني",
     "phone": "رقم الهاتف"
+  },
+  "password": {
+    "title": "تغيير كلمة المرور",
+    "security": "الأمان",
+    "update_subtitle": "حدّث كلمة المرور الخاصة بك",
+    "current": "كلمة المرور الحالية",
+    "new": "كلمة المرور الجديدة",
+    "confirm": "تأكيد كلمة المرور",
+    "mismatch": "كلمتا المرور غير متطابقتين",
+    "changed": "تم تغيير كلمة المرور بنجاح",
+    "error": "حدث خطأ"
+  },
+  "certificates": {
+    "empty": "لا توجد شهادات بعد",
+    "empty_desc": "أكمل كورسًا للحصول على شهادتك",
+    "number": "رقم الشهادة:",
+    "not_found": "الشهادة غير موجودة",
+    "back_to_certs": "العودة للشهادات",
+    "title": "شهادة",
+    "print": "طباعة",
+    "download": "تحميل",
+    "academy_name": "أكاديمية أحمد فares",
+    "academy_subtitle": "أكاديمية الإنجليزية",
+    "completion": "شهادة إتمام",
+    "certifies_that": "نشهد بأن",
+    "student_fallback": "طالب",
+    "completed_text": "لقد أتم بنجاح كورس",
+    "director": "المدير",
+    "cert_number": "رقم الشهادة",
+    "issue_date": "تاريخ الإصدار"
   }
 }

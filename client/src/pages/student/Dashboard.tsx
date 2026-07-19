@@ -10,7 +10,6 @@ import { enrollmentsApi, paymentsApi, bookingsApi, notificationsApi } from '../.
 export default function StudentDashboard() {
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
-  const isArabic = i18n.language === 'ar';
   const [stats, setStats] = useState({ courses: 0, payments: 0, bookings: 0, certificates: 0, unreadNotifications: 0 });
 
   useEffect(() => {
@@ -43,21 +42,21 @@ export default function StudentDashboard() {
   ];
 
   const quickActions = [
-    { to: '/courses', icon: BookOpen, label: isArabic ? 'تصفح الكورسات' : 'Browse Courses', color: 'bg-primary text-white' },
+    { to: '/courses', icon: BookOpen, label: t('dashboard.browse_courses'), color: 'bg-primary text-white' },
     { to: '/dashboard/profile', icon: User, label: t('dashboard.profile'), color: 'bg-gray-100 text-gray-700' },
         { to: '/dashboard/notifications', icon: Bell, label: t('dashboard.notifications'), color: 'bg-gray-100 text-gray-700', badge: stats.unreadNotifications > 0 ? stats.unreadNotifications : undefined },
   ];
 
   return (
     <>
-      <SEO title={isArabic ? 'لوحة التحكم' : 'Dashboard'} />
+      <SEO title={t('seo.dashboard')} />
 
       <div>
         <h1 className="text-2xl font-bold text-gray-900 mb-2">
           {t('dashboard.welcome')}, {user?.name}!
         </h1>
         <p className="text-gray-600 mb-8">
-          {isArabic ? 'تابع تقدمك وإدارة حسابك' : 'Track your progress and manage your account'}
+          {t('student.track_progress')}
         </p>
 
         {/* Stats */}
@@ -82,7 +81,7 @@ export default function StudentDashboard() {
 
         {/* Quick Actions */}
         <h2 className="text-lg font-semibold text-gray-900 mb-4">
-          {isArabic ? 'إجراءات سريعة' : 'Quick Actions'}
+          {t('dashboard.quick_actions')}
         </h2>
         <div className="grid md:grid-cols-3 gap-4">
           {quickActions.map((action, index) => (
@@ -105,7 +104,7 @@ export default function StudentDashboard() {
                     {action.badge}
                   </span>
                 )}
-                <ArrowRight className={`w-4 h-4 text-gray-400 ${isArabic ? 'rotate-180' : ''}`} />
+                <ArrowRight className={`w-4 h-4 text-gray-400 ${i18n.language === 'ar' ? 'rotate-180' : ''}`} />
               </Link>
             </motion.div>
           ))}

@@ -5,10 +5,10 @@ import { Bell, Send, Trash2, Loader2, Search } from 'lucide-react';
 import SEO from '../../components/ui/SEO';
 import { adminApi } from '../../services';
 import type { Notification, User } from '../../types';
+import { localize } from '../../utils/localize';
 
 export default function AdminNotifications() {
-  const { t, i18n } = useTranslation();
-  const isArabic = i18n.language === 'ar';
+  const { t } = useTranslation();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
@@ -77,10 +77,10 @@ export default function AdminNotifications() {
   };
 
   const typeLabels: Record<string, string> = {
-    system: isArabic ? 'نظامي' : 'System',
-    payment: isArabic ? 'دفع' : 'Payment',
-    course: isArabic ? 'كورس' : 'Course',
-    booking: isArabic ? 'حجز' : 'Booking',
+    system: t('admin.notification_type_system'),
+    payment: t('admin.notification_type_payment'),
+    course: t('admin.notification_type_course'),
+    booking: t('admin.notification_type_booking'),
   };
 
   if (loading) {
@@ -93,16 +93,16 @@ export default function AdminNotifications() {
 
   return (
     <>
-      <SEO title={isArabic ? 'إرسال إشعارات' : 'Send Notifications'} />
+      <SEO title={t('seo.adminNotifications')} />
       <div>
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">{isArabic ? 'إرسال إشعارات' : 'Send Notifications'}</h1>
-            <p className="text-sm text-gray-500 mt-1">{isArabic ? 'أرسل إشعارات للطلاب' : 'Send notifications to students'}</p>
+            <h1 className="text-2xl font-bold text-gray-900">{t('admin.sendNotifications')}</h1>
+            <p className="text-sm text-gray-500 mt-1">{t('admin.send_notifications_desc')}</p>
           </div>
           <button onClick={() => setShowForm(!showForm)} className="btn-primary flex items-center gap-2">
             <Send className="w-4 h-4" />
-            {isArabic ? 'إرسال إشعار' : 'Send Notification'}
+            {t('admin.send_notification')}
           </button>
         </div>
 
@@ -112,30 +112,30 @@ export default function AdminNotifications() {
             animate={{ opacity: 1, y: 0 }}
             className="card mb-8"
           >
-            <h3 className="font-semibold text-gray-900 mb-4">{isArabic ? 'إشعار جديد' : 'New Notification'}</h3>
+            <h3 className="font-semibold text-gray-900 mb-4">{t('admin.new_notification')}</h3>
             <div className="grid md:grid-cols-2 gap-4 mb-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{isArabic ? 'العنوان (إنجليزي)' : 'Title (EN)'}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.title_en_label')}</label>
                 <input type="text" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })}
                   className="input w-full" placeholder="Title" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{isArabic ? 'العنوان (عربي)' : 'Title (AR)'}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.title_ar_label')}</label>
                 <input type="text" value={form.titleAr} onChange={(e) => setForm({ ...form, titleAr: e.target.value })}
                   className="input w-full" placeholder="العنوان" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{isArabic ? 'الرسالة (إنجليزي)' : 'Message (EN)'}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.message_en')}</label>
                 <textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
                   className="input w-full" rows={3} placeholder="Message" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{isArabic ? 'الرسالة (عربي)' : 'Message (AR)'}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.message_ar')}</label>
                 <textarea value={form.messageAr} onChange={(e) => setForm({ ...form, messageAr: e.target.value })}
                   className="input w-full" rows={3} placeholder="الرسالة" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{isArabic ? 'النوع' : 'Type'}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('admin.type')}</label>
                 <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value as any })}
                   className="input w-full">
                   <option value="system">{typeLabels.system}</option>
@@ -145,7 +145,7 @@ export default function AdminNotifications() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{isArabic ? 'رابط (اختياري)' : 'Link (optional)'}</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('announcements.link_optional')}</label>
                 <input type="text" value={form.link} onChange={(e) => setForm({ ...form, link: e.target.value })}
                   className="input w-full" placeholder="/dashboard/courses" />
               </div>
@@ -154,12 +154,12 @@ export default function AdminNotifications() {
             <div className="mb-4">
               <div className="flex items-center justify-between mb-2">
                 <label className="text-sm font-medium text-gray-700">
-                  {isArabic ? 'المستلمون' : 'Recipients'}
+                  {t('admin.recipients')}
                 </label>
                 <label className="flex items-center gap-2 text-sm cursor-pointer">
                   <input type="checkbox" checked={selectAll} onChange={(e) => setSelectAll(e.target.checked)}
                     className="w-4 h-4 text-primary rounded" />
-                  {isArabic ? 'جميع الطلاب' : 'All Students'}
+                  {t('admin.all_students')}
                 </label>
               </div>
               {!selectAll && (
@@ -167,7 +167,7 @@ export default function AdminNotifications() {
                   <div className="relative mb-2">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <input type="text" value={userSearch} onChange={(e) => setUserSearch(e.target.value)}
-                      className="input w-full pl-10" placeholder={isArabic ? 'بحث عن طالب...' : 'Search students...'} />
+                      className="input w-full pl-10" placeholder={t('admin.search_students')} />
                   </div>
                   <div className="max-h-40 overflow-y-auto border rounded-lg p-2 space-y-1">
                     {filteredUsers.filter((u) => u.role === 'student').map((user) => (
@@ -187,7 +187,7 @@ export default function AdminNotifications() {
               <button onClick={handleSend} disabled={sending || !form.title || !form.message}
                 className="btn-primary flex items-center gap-2">
                 {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-                {isArabic ? 'إرسال' : 'Send'}
+                {t('common.submit')}
               </button>
               <button onClick={() => setShowForm(false)} className="btn-outline">
                 {t('common.cancel')}
@@ -197,11 +197,11 @@ export default function AdminNotifications() {
         )}
 
         <div className="card">
-          <h3 className="font-semibold text-gray-900 mb-4">{isArabic ? 'الإشعارات المرسلة' : 'Sent Notifications'}</h3>
+          <h3 className="font-semibold text-gray-900 mb-4">{t('admin.sent_notifications')}</h3>
           {notifications.length === 0 ? (
             <div className="text-center py-12">
               <Bell className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-              <p className="text-gray-500">{isArabic ? 'لا توجد إشعارات بعد' : 'No notifications yet'}</p>
+              <p className="text-gray-500">{t('admin.no_notifications')}</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -212,8 +212,8 @@ export default function AdminNotifications() {
                       <Bell className="w-5 h-5 text-primary" />
                     </div>
                     <div className="min-w-0">
-                      <h4 className="font-medium text-gray-900 text-sm">{isArabic ? noti.titleAr : noti.title}</h4>
-                      <p className="text-sm text-gray-600 mt-1 line-clamp-2">{isArabic ? noti.messageAr : noti.message}</p>
+                      <h4 className="font-medium text-gray-900 text-sm">{localize(noti, 'title')}</h4>
+                      <p className="text-sm text-gray-600 mt-1 line-clamp-2">{localize(noti, 'message')}</p>
                       <div className="flex items-center gap-3 mt-2">
                         <span className="text-xs px-2 py-0.5 bg-gray-200 rounded-full">{typeLabels[noti.type]}</span>
                         <span className="text-xs text-gray-400">{new Date(noti.createdAt).toLocaleDateString()}</span>
