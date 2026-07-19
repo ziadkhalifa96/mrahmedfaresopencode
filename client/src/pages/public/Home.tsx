@@ -11,7 +11,6 @@ import SEO from '../../components/ui/SEO';
 import { Container } from '../../components/ui/Section';
 import ScrollReveal from '../../components/ui/ScrollReveal';
 import AnimatedCounter from '../../components/ui/AnimatedCounter';
-import GlassCard from '../../components/ui/GlassCard';
 import HeroSlider from '../../components/ui/HeroSlider';
 import TestimonialSlider from '../../components/ui/TestimonialSlider';
 import FloatingParticles from '../../components/ui/FloatingParticles';
@@ -53,9 +52,9 @@ export default function Home() {
   const whyChooseUsData = section('whyChooseUs');
 
   const testimonials = testimonialsData.map((item: any) => ({
-    name: item.name || l(item, 'name'),
+    name: l(item),
     role: l(item, 'role'),
-    content: l(item),
+    content: l(item, 'content'),
     rating: item.rating || 5,
   }));
 
@@ -104,7 +103,9 @@ export default function Home() {
         <Container>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {statsData.map((stat: any, index: number) => {
-              const num = parseInt(stat.value) || parseInt(stat.number) || 0;
+              const val = l(stat);
+              const num = parseInt(val.replace(/[^0-9]/g, '')) || 0;
+              const hasPlus = val.includes('+') || val.includes('آلاف') || val.includes('K');
               return (
                 <ScrollReveal key={stat.key} delay={index * 0.1}>
                   <div className="text-center group">
@@ -113,7 +114,7 @@ export default function Home() {
                       <div className="relative">
                         <AnimatedCounter
                           end={num}
-                          suffix={stat.value?.includes('+') || stat.number?.includes('+') ? '+' : ''}
+                          suffix={hasPlus ? '+' : ''}
                           className="text-4xl md:text-5xl font-bold gradient-text"
                         />
                       </div>
@@ -150,7 +151,7 @@ export default function Home() {
               const IconComponent = iconMap[item.icon] || CheckCircle;
               return (
                 <ScrollReveal key={item.key} delay={index * 0.08}>
-                  <GlassCard className="p-6 h-full card-3d cursor-default" hover3d>
+                  <div className="group relative bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md hover:shadow-xl border border-gray-100 dark:border-gray-700 transition-all duration-300 hover:-translate-y-1 h-full">
                     <div className="flex items-start gap-4">
                       <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center flex-shrink-0 shadow-lg shadow-primary/20 group-hover:shadow-primary/30 transition-shadow">
                         <IconComponent className="w-7 h-7 text-white" />
@@ -160,7 +161,7 @@ export default function Home() {
                         <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{l(item, 'description')}</p>
                       </div>
                     </div>
-                  </GlassCard>
+                  </div>
                 </ScrollReveal>
               );
             })}

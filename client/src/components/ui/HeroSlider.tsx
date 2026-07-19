@@ -18,6 +18,17 @@ interface HeroSlide {
   imageUrl?: string;
 }
 
+const gradientStyles: Record<string, string> = {
+  'from-primary via-primary-dark to-blue-900': 'linear-gradient(135deg, #1e40af 0%, #1e3a8a 50%, #1e3a8a 100%)',
+  'from-blue-900 via-primary to-indigo-900': 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #312e81 100%)',
+  'from-indigo-900 via-blue-800 to-primary': 'linear-gradient(135deg, #312e81 0%, #1e40af 50%, #1e40af 100%)',
+};
+
+const getGradientStyle = (bgGradient: string) => {
+  if (gradientStyles[bgGradient]) return gradientStyles[bgGradient];
+  return 'linear-gradient(135deg, #1e40af 0%, #1e3a8a 50%, #1e3a8a 100%)';
+};
+
 const fallbackSlides: HeroSlide[] = [
   {
     id: 0,
@@ -79,7 +90,8 @@ export default function HeroSlider() {
           animate="center"
           exit="exit"
           transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className={`absolute inset-0 bg-gradient-to-br ${slide.bgGradient} text-white`}
+          className="absolute inset-0 text-white"
+          style={{ background: getGradientStyle(slide.bgGradient) }}
         >
           <FloatingParticles count={30} />
 

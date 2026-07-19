@@ -2,16 +2,6 @@ import { useState, useEffect } from 'react';
 import api from '../services/api';
 import i18n from '../i18n';
 
-interface PageContentItem {
-  id: number;
-  page: string;
-  section: string;
-  key: string;
-  valueEn: string;
-  valueAr: string;
-  metadata: Record<string, any> | null;
-}
-
 interface GroupedContent {
   [section: string]: {
     [key: string]: {
@@ -31,17 +21,31 @@ export const usePageContent = (page: string) => {
     try {
       setLoading(true);
       const response = await api.get(`/page-content/${page}`);
-      const items: PageContentItem[] = response.data.content || [];
+      const sectionsData = response.data.sections || response.data.content || {};
       
       const grouped: GroupedContent = {};
-      items.forEach((item) => {
-        if (!grouped[item.section]) grouped[item.section] = {};
-        const section = grouped[item.section]!;
-        section[item.key] = {
-          en: item.valueEn,
-          ar: item.valueAr,
-          metadata: item.metadata,
-        };
+      
+      Object.entries(sectionsData).forEach(([sectionName, sectionItems]: [string, any]) => {
+        grouped[sectionName] = {};
+        if (Array.isArray(sectionItems)) {
+          sectionItems.forEach((item: any) => {
+            const metadata = typeof item.metadata === 'string' ? JSON.parse(item.metadata) : (item.metadata || {});
+            grouped[sectionName]![item.key] = {
+              en: item.valueEn || item.en || '',
+              ar: item.valueAr || item.ar || '',
+              metadata,
+            };
+          });
+        } else if (typeof sectionItems === 'object') {
+          Object.entries(sectionItems).forEach(([key, val]: [string, any]) => {
+            const metadata = typeof val.metadata === 'string' ? JSON.parse(val.metadata) : (val.metadata || {});
+            grouped[sectionName]![key] = {
+              en: val.en || val.valueEn || '',
+              ar: val.ar || val.valueAr || '',
+              metadata,
+            };
+          });
+        }
       });
       
       setContent(grouped);
