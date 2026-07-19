@@ -21,7 +21,7 @@ export const useSiteSettings = () => {
     const fetchSettings = async () => {
       try {
         const response = await api.get('/public/site-settings');
-        setSettings(response.data.settings);
+        setSettings(response.data?.settings || {});
       } catch {
         // Settings will be empty, app continues with fallbacks
       } finally {
@@ -32,7 +32,8 @@ export const useSiteSettings = () => {
   }, []);
 
   const t = (key: string): string => {
-    const val = tryParse(settings[key]);
+    const obj = settings || {};
+    const val = tryParse(obj[key]);
     if (!val) return '';
     if (typeof val === 'object' && val.en != null && val.ar != null) {
       return val[i18n.language as 'en' | 'ar'] || val.en || '';
@@ -42,7 +43,10 @@ export const useSiteSettings = () => {
     return '';
   };
 
-  const get = (key: string) => tryParse(settings[key]) || null;
+  const get = (key: string) => {
+    const obj = settings || {};
+    return tryParse(obj[key]) || null;
+  };
 
   return { settings, loading, t, get };
 };

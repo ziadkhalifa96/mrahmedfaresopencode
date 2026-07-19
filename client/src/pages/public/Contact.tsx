@@ -24,7 +24,7 @@ export default function Contact() {
   const phone = settings('phone') || '01144258565';
   const whatsapp = settings('whatsapp') || '201144258565';
   const address = settings('address') || t('info', 'address');
-  const mapCoordinates = settings('mapCoordinates') as unknown as Record<string, number> | null;
+  const mapCoordinates = settings('map_coordinates') as unknown as Record<string, number> | null;
   const lat = mapCoordinates?.lat || 29.07338889;
   const lng = mapCoordinates?.lng || 31.11063889;
 
