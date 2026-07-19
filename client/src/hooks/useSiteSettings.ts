@@ -6,6 +6,13 @@ interface SiteSettings {
   [key: string]: any;
 }
 
+const tryParse = (val: any): any => {
+  if (typeof val === 'string') {
+    try { return JSON.parse(val); } catch { return val; }
+  }
+  return val;
+};
+
 export const useSiteSettings = () => {
   const [settings, setSettings] = useState<SiteSettings>({});
   const [loading, setLoading] = useState(true);
@@ -25,17 +32,17 @@ export const useSiteSettings = () => {
   }, []);
 
   const t = (key: string): string => {
-    const val = settings[key];
+    const val = tryParse(settings[key]);
     if (!val) return '';
-    if (typeof val === 'object' && val.en && val.ar) {
+    if (typeof val === 'object' && val.en != null && val.ar != null) {
       return val[i18n.language as 'en' | 'ar'] || val.en || '';
     }
     if (typeof val === 'string') return val;
-    if (typeof val === 'object' && val.url) return val.url;
+    if (typeof val === 'object' && val.url != null) return val.url;
     return '';
   };
 
-  const get = (key: string) => settings[key] || null;
+  const get = (key: string) => tryParse(settings[key]) || null;
 
   return { settings, loading, t, get };
 };

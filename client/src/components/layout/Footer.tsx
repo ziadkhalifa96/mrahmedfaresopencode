@@ -11,7 +11,9 @@ export default function Footer() {
   const phone = settings('phone') || '01144258565';
   const whatsapp = settings('whatsapp') || '201144258565';
   const address = settings('address') || ui('footer.address');
-  const socialLinks = (settings('socialLinks') || {}) as Record<string, string>;
+  const socialFb = settings('social_facebook');
+  const socialIg = settings('social_instagram');
+  const socialYt = settings('social_youtube');
 
   const quickLinks = [
     { to: `/${lang}`, label: ui('nav.home') },
@@ -32,7 +34,7 @@ export default function Footer() {
                 <span className="text-white font-bold text-xl">AF</span>
               </div>
               <span className="font-bold text-xl">
-                {settings('academyName') || ui('footer.academy_name')}
+                {settings('site_name_short') || ui('footer.academy_name')}
               </span>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
@@ -73,33 +75,23 @@ export default function Footer() {
               </li>
             </ul>
             <div className="flex gap-3 mt-4">
-              {socialLinks.facebook && (
-                <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">
+              {socialFb && (
+                <a href={socialFb} target="_blank" rel="noopener noreferrer" className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">
                   <Facebook className="w-5 h-5" />
                 </a>
               )}
-              {socialLinks.instagram && (
-                <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">
+              {socialIg && (
+                <a href={socialIg} target="_blank" rel="noopener noreferrer" className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">
                   <Instagram className="w-5 h-5" />
                 </a>
               )}
-              {socialLinks.youtube && (
-                <a href={socialLinks.youtube} target="_blank" rel="noopener noreferrer" className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">
+              {socialYt && (
+                <a href={socialYt} target="_blank" rel="noopener noreferrer" className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">
                   <Youtube className="w-5 h-5" />
                 </a>
               )}
-              {!socialLinks.facebook && !socialLinks.instagram && !socialLinks.youtube && (
-                <>
-                  <a href="#" className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">
-                    <Facebook className="w-5 h-5" />
-                  </a>
-                  <a href="#" className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">
-                    <Instagram className="w-5 h-5" />
-                  </a>
-                  <a href="#" className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">
-                    <Youtube className="w-5 h-5" />
-                  </a>
-                </>
+              {!socialFb && !socialIg && !socialYt && (
+                <>{/* Hidden placeholder for empty state */}</>
               )}
             </div>
           </div>
@@ -107,7 +99,7 @@ export default function Footer() {
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">
           <p>
-            &copy; {new Date().getFullYear()} {settings('academyName') || ui('footer.academy_name')}. {ui('footer.rights')}.
+            &copy; {new Date().getFullYear()} {settings('site_name_short') || ui('footer.academy_name')}. {ui('footer.rights')}.
           </p>
         </div>
       </div>

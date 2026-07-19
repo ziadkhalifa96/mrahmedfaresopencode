@@ -14,11 +14,11 @@ export default function SEO({ title, description, keywords, image, url }: SEOPro
   const { i18n, t } = useTranslation();
   const { t: settings } = useSiteSettings();
 
-  const defaultTitle = settings('academyName')
-    ? `${settings('academyName')} ${t('seo.default.title')}`
+  const defaultTitle = settings('site_name_short')
+    ? `${settings('site_name_short')} ${t('seo.default.title')}`
     : t('seo.default.title');
 
-  const defaultDescription = settings('seoDescription')
+  const defaultDescription = settings('site_description')
     || t('seo.default.description');
 
   const fullTitle = title ? `${title} | ${defaultTitle}` : defaultTitle;

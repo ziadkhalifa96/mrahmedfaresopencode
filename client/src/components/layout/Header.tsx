@@ -57,7 +57,7 @@ export default function Header() {
               <span className="text-white font-bold text-xl">AF</span>
             </div>
             <span className="font-bold text-xl text-gray-900 hidden sm:block">
-              {settings('academyName') || ui('header.academy_name')}
+              {settings('site_name_short') || ui('header.academy_name')}
             </span>
           </Link>
 
