@@ -7,9 +7,9 @@ module.exports = {
       // HOME PAGE
       // hero
       { page: 'home', section: 'hero', key: 'title', value_en: 'Learn English with 28 Years of Experience', value_ar: 'اتعلم إنجليزي مع 28 سنة خبرة', created_at: now, updated_at: now },
-      { page: 'home', section: 'hero', key: 'subtitle', value_en: 'Ahmed Fares - Diploma in Teaching English from Scotland', value_ar: 'أحمد فارس - دبلومة تدريس اللغة الإنجليزية من اسكتلندا', created_at: now, updated_at: now },
+      { page: 'home', section: 'hero', key: 'subtitle', value_en: 'Ahmed Fares - Diploma in Teaching English from Scotland', value_ar: 'أ/احمد فارس - دبلومة تدريس اللغة الإنجليزية من اسكتلندا', created_at: now, updated_at: now },
       { page: 'home', section: 'hero', key: 'cta', value_en: 'Start Learning Now', value_ar: 'ابدأ التعلم الآن', created_at: now, updated_at: now },
-      { page: 'home', section: 'hero', key: 'badge', value_en: 'Ahmed Fares - 28 Years Experience', value_ar: 'أحمد فارس - 28 سنة خبرة', created_at: now, updated_at: now },
+      { page: 'home', section: 'hero', key: 'badge', value_en: 'Ahmed Fares - 28 Years Experience', value_ar: 'أ/احمد فارس - 28 سنة خبرة', created_at: now, updated_at: now },
       { page: 'home', section: 'hero', key: 'rating', value_en: '4.9/5 Student Rating', value_ar: 'تقييم الطلاب 4.9/5', created_at: now, updated_at: now },
 
       // stats
@@ -19,8 +19,8 @@ module.exports = {
       { page: 'home', section: 'stats', key: 'success', value_en: '95%', value_ar: '95%', metadata: JSON.stringify({ labelEn: 'Success Rate', labelAr: 'نسبة النجاح', order: 4 }), created_at: now, updated_at: now },
 
       // testimonials
-      { page: 'home', section: 'testimonials', key: 'testimonial1', value_en: 'Mohamed Ahmed', value_ar: 'محمد أحمد', metadata: JSON.stringify({ roleEn: 'Student', roleAr: 'طالب', contentEn: 'Ahmed Fares completely changed my approach to English. His methods are unique and effective.', contentAr: 'أحمد فارس غير تماماً من نظرتي للإنجليزي. أساليبه فريدة وفعالة.', rating: 5, order: 1 }), created_at: now, updated_at: now },
-      { page: 'home', section: 'testimonials', key: 'testimonial2', value_en: 'Sara Ali', value_ar: 'سارة علي', metadata: JSON.stringify({ roleEn: 'Student', roleAr: 'طالبة', contentEn: 'Thanks to Ahmed Fares, I scored 98% in my Thanaweya Amma English exam.', contentAr: 'بفضلك أحمد فارس, جبت 95% في امتحان الإنجليزي في الثانوية العامة.', rating: 5, order: 2 }), created_at: now, updated_at: now },
+      { page: 'home', section: 'testimonials', key: 'testimonial1', value_en: 'Mohamed Ahmed', value_ar: 'محمد أحمد', metadata: JSON.stringify({ roleEn: 'Student', roleAr: 'طالب', contentEn: 'Ahmed Fares completely changed my approach to English. His methods are unique and effective.', contentAr: 'أ/احمد فارس غير تماماً من نظرتي للإنجليزي. أساليبه فريدة وفعالة.', rating: 5, order: 1 }), created_at: now, updated_at: now },
+      { page: 'home', section: 'testimonials', key: 'testimonial2', value_en: 'Sara Ali', value_ar: 'سارة علي', metadata: JSON.stringify({ roleEn: 'Student', roleAr: 'طالبة', contentEn: 'Thanks to Ahmed Fares, I scored 98% in my Thanaweya Amma English exam.', contentAr: 'بفضلك أ/احمد فارس, جبت 95% في امتحان الإنجليزي في الثانوية العامة.', rating: 5, order: 2 }), created_at: now, updated_at: now },
       { page: 'home', section: 'testimonials', key: 'testimonial3', value_en: 'Omar Hassan', value_ar: 'عمر حسن', metadata: JSON.stringify({ roleEn: 'Student', roleAr: 'طالب', contentEn: 'The live sessions and personal attention made all the difference.', contentAr: 'الجلسات المباشرة والاهتمام الشخصي أحدثا فرقا كبيرا.', rating: 5, order: 3 }), created_at: now, updated_at: now },
 
       // whyChooseUs
@@ -32,30 +32,30 @@ module.exports = {
       { page: 'home', section: 'whyChooseUs', key: 'ai', value_en: 'AI-Powered Learning', value_ar: 'تعلم بالذكاء الاصطناعي', metadata: JSON.stringify({ icon: 'Brain', descriptionEn: 'Modern AI tools for personalized learning', descriptionAr: 'أدوات ذكاء اصطناعي حديثة للتعلم الشخصي', order: 6 }), created_at: now, updated_at: now },
 
       // teacher
-      { page: 'home', section: 'teacher', key: 'name', value_en: 'Ahmed Fares', value_ar: 'أحمد فارس', created_at: now, updated_at: now },
+      { page: 'home', section: 'teacher', key: 'name', value_en: 'Ahmed Fares', value_ar: 'أ/احمد فارس', created_at: now, updated_at: now },
       { page: 'home', section: 'teacher', key: 'title', value_en: 'English Language Teacher', value_ar: 'مدرس اللغة الإنجليزية', created_at: now, updated_at: now },
-      { page: 'home', section: 'teacher', key: 'bio', value_en: 'With over 28 years of teaching experience and a diploma in teaching English from Scotland, Ahmed Fares has helped thousands of students achieve their academic goals.', value_ar: 'مع أكثر من 28 سنة من خبرة التدريس ودبلومة في تدريس اللغة الإنجليزية من اسكتلندا، ساعد أحمد فارس آلاف الطلاب في تحقيق أهدافهم الأكاديمية.', created_at: now, updated_at: now },
+      { page: 'home', section: 'teacher', key: 'bio', value_en: 'With over 28 years of teaching experience and a diploma in teaching English from Scotland, Ahmed Fares has helped thousands of students achieve their academic goals.', value_ar: 'مع أكثر من 28 سنة من خبرة التدريس ودبلومة في تدريس اللغة الإنجليزية من اسكتلندا، ساعد أ/احمد فارس آلاف الطلاب في تحقيق أهدافهم الأكاديمية.', created_at: now, updated_at: now },
 
       // cta
       { page: 'home', section: 'cta', key: 'heading', value_en: 'Ready to Start Your Learning Journey?', value_ar: 'مستعد تبدأ رحلة التعلم بتاعتك؟', created_at: now, updated_at: now },
-      { page: 'home', section: 'cta', key: 'description', value_en: 'Join thousands of students who have achieved their dreams with Ahmed Fares Academy.', value_ar: 'انضم لآلاف الطلاب اللي حققوا أحلامهم مع أكاديمية أحمد فارس.', created_at: now, updated_at: now },
+      { page: 'home', section: 'cta', key: 'description', value_en: 'Join thousands of students who have achieved their dreams with Ahmed Fares Academy.', value_ar: 'انضم لآلاف الطلاب اللي حققوا أحلامهم مع أكاديمية أ/احمد فارس.', created_at: now, updated_at: now },
       { page: 'home', section: 'cta', key: 'cta_primary', value_en: 'Register Now Free', value_ar: 'سجل الآن مجاناً', created_at: now, updated_at: now },
       { page: 'home', section: 'cta', key: 'cta_secondary', value_en: 'Browse Courses', value_ar: 'تصفح الكورسات', created_at: now, updated_at: now },
 
       // ABOUT PAGE
       // hero
       { page: 'about', section: 'hero', key: 'title', value_en: 'About Us', value_ar: 'من نحن', created_at: now, updated_at: now },
-      { page: 'about', section: 'hero', key: 'subtitle', value_en: 'Learn about Ahmed Fares and his journey in English education', value_ar: 'تعرّف على أحمد فارس ورحلته في تعليم الإنجليزي', created_at: now, updated_at: now },
+      { page: 'about', section: 'hero', key: 'subtitle', value_en: 'Learn about Ahmed Fares and his journey in English education', value_ar: 'تعرّف على أ/احمد فارس ورحلته في تعليم الإنجليزي', created_at: now, updated_at: now },
 
       // teacher
-      { page: 'about', section: 'teacher', key: 'name', value_en: 'Ahmed Fares', value_ar: 'أحمد فارس', created_at: now, updated_at: now },
+      { page: 'about', section: 'teacher', key: 'name', value_en: 'Ahmed Fares', value_ar: 'أ/احمد فارس', created_at: now, updated_at: now },
       { page: 'about', section: 'teacher', key: 'title', value_en: 'English Language Teacher', value_ar: 'مدرس اللغة الإنجليزية', created_at: now, updated_at: now },
       { page: 'about', section: 'teacher', key: 'location', value_en: 'Beni Suef, Egypt', value_ar: 'بني سويف، مصر', created_at: now, updated_at: now },
       { page: 'about', section: 'teacher', key: 'phone', value_en: '01144258565', value_ar: '01144258565', created_at: now, updated_at: now },
 
       // biography
       { page: 'about', section: 'biography', key: 'title', value_en: 'A Journey Full of Success', value_ar: 'رحلة مليئة بالنجاح', created_at: now, updated_at: now },
-      { page: 'about', section: 'biography', key: 'paragraph1', value_en: 'With over 28 years of teaching English, Ahmed Fares has dedicated his life to helping Egyptian students master the English language. Starting his career at Nile Secondary School and later at El Shorouk Experimental Languages School, he has consistently delivered outstanding results.', value_ar: 'مع أكثر من 28 سنة من تدريس اللغة الإنجليزية، كرّس أحمد فارس حياته لمساعدة الطلاب المصريين على إتقان اللغة الإنجليزية. بدأ مسيرته المهنية في مدرسة النيل الثانوية ولاحقاً في مدرسة الشروق التجريبية للغات، وقد قدم دائماً نتائج مبهرة.', created_at: now, updated_at: now },
+      { page: 'about', section: 'biography', key: 'paragraph1', value_en: 'With over 28 years of teaching English, Ahmed Fares has dedicated his life to helping Egyptian students master the English language. Starting his career at Nile Secondary School and later at El Shorouk Experimental Languages School, he has consistently delivered outstanding results.', value_ar: 'مع أكثر من 28 سنة من تدريس اللغة الإنجليزية، كرّس أ/احمد فارس حياته لمساعدة الطلاب المصريين على إتقان اللغة الإنجليزية. بدأ مسيرته المهنية في مدرسة النيل الثانوية ولاحقاً في مدرسة الشروق التجريبية للغات، وقد قدم دائماً نتائج مبهرة.', created_at: now, updated_at: now },
       { page: 'about', section: 'biography', key: 'paragraph2', value_en: 'His diploma in teaching English from Scotland has equipped him with world-class teaching methodologies that he brings to every classroom. His commitment to excellence has made him one of the most respected English teachers in Beni Suef and beyond.', value_ar: 'دبلومته في تدريس اللغة الإنجليزية من اسكتلندا أهّنته بمنهجيات تدريس عالمية يقدمها في كل حصة. التزامه بالتميز جعله واحداً من أكثر مدربي الإنجليزية احتراماً في بني سويف وخارجها.', created_at: now, updated_at: now },
 
       // experience

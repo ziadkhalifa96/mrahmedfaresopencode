@@ -116,7 +116,7 @@ export default function CertificateView() {
             <div className="relative w-full flex justify-between items-end mt-8">
               <div className="text-center">
                 <div className="w-40 border-b border-gray-400 mb-2" />
-                <p className="text-sm text-gray-500">{i18n.language === 'ar' ? 'أحمد فارس' : 'Ahmed Fares'}</p>
+                <p className="text-sm text-gray-500">{i18n.language === 'ar' ? 'أ/احمد فارس' : 'Ahmed Fares'}</p>
                 <p className="text-xs text-gray-400">{t('certificates.director')}</p>
               </div>
               <div className="text-center">
