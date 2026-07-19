@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import { HelmetProvider } from 'react-helmet-async';
 import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -51,19 +51,22 @@ export default function App() {
             <BrowserRouter>
               <Suspense fallback={<PageLoader />}>
                 <Routes>
-                  {/* Public Routes */}
+                  {/* Language redirect - redirect root to default language */}
+                  <Route path="/" element={<Navigate to="/en" replace />} />
+
+                  {/* Public Routes with language prefix */}
                   <Route element={<RootLayout />}>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/courses" element={<Courses />} />
-                    <Route path="/courses/:slug" element={<CourseDetail />} />
-                    <Route path="/blog" element={<Blog />} />
-                    <Route path="/blog/:slug" element={<BlogPostDetail />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/:lang" element={<Home />} />
+                    <Route path="/:lang/courses" element={<Courses />} />
+                    <Route path="/:lang/courses/:slug" element={<CourseDetail />} />
+                    <Route path="/:lang/blog" element={<Blog />} />
+                    <Route path="/:lang/blog/:slug" element={<BlogPostDetail />} />
+                    <Route path="/:lang/about" element={<About />} />
+                    <Route path="/:lang/contact" element={<Contact />} />
                     <Route path="*" element={<NotFound />} />
                   </Route>
 
-                  {/* Auth Routes */}
+                  {/* Auth Routes (no language prefix needed) */}
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
 

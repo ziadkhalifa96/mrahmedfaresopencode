@@ -27,3 +27,16 @@ export const getPublicSettings = async (req: AuthRequest, res: Response) => {
     res.status(500).json({ error: error.message || 'Failed to get settings' });
   }
 };
+
+export const getSiteSettings = async (req: AuthRequest, res: Response) => {
+  try {
+    const settings = await SiteSetting.findAll({
+      attributes: ['key', 'value'],
+    });
+    const settingsObj: Record<string, any> = {};
+    settings.forEach((s: any) => { settingsObj[s.key] = s.value; });
+    res.json({ settings: settingsObj });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || 'Failed to get settings' });
+  }
+};

@@ -1,16 +1,19 @@
 import { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router';
+import { Link, useLocation, useNavigate, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Menu, X, Globe, User, LogOut, ChevronDown, Sun, Moon } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
+import { useSiteSettings } from '../../hooks/useSiteSettings';
 
 export default function Header() {
-  const { t, i18n } = useTranslation();
+  const { lang = 'en' } = useParams<{ lang: string }>();
+  const { t: ui, i18n } = useTranslation();
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
+  const { t: settings } = useSiteSettings();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
@@ -21,20 +24,25 @@ export default function Header() {
     i18n.changeLanguage(newLang);
     localStorage.setItem('language', newLang);
     document.documentElement.dir = newLang === 'ar' ? 'rtl' : 'ltr';
+    const segments = location.pathname.split('/').filter(Boolean);
+    if (segments.length > 0 && segments[0] === lang) {
+      segments[0] = newLang;
+    }
+    navigate('/' + segments.join('/'));
   };
 
   const handleLogout = async () => {
     await logout();
-    navigate('/');
+    navigate(`/${lang}`);
     setUserMenuOpen(false);
   };
 
   const navLinks = [
-    { to: '/', label: t('nav.home') },
-    { to: '/courses', label: t('nav.courses') },
-    { to: '/blog', label: t('nav.blog') },
-    { to: '/about', label: t('nav.about') },
-    { to: '/contact', label: t('nav.contact') },
+    { to: `/${lang}`, label: ui('nav.home') },
+    { to: `/${lang}/courses`, label: ui('nav.courses') },
+    { to: `/${lang}/blog`, label: ui('nav.blog') },
+    { to: `/${lang}/about`, label: ui('nav.about') },
+    { to: `/${lang}/contact`, label: ui('nav.contact') },
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -44,12 +52,12 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
+          <Link to={`/${lang}`} className="flex items-center gap-2">
             <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xl">AF</span>
             </div>
             <span className="font-bold text-xl text-gray-900 hidden sm:block">
-              {isArabic ? 'أكاديمية أحمد فares' : 'Ahmed Fares Academy'}
+              {settings('academyName') || ui('header.academy_name')}
             </span>
           </Link>
 
@@ -75,7 +83,7 @@ export default function Header() {
             <button
               onClick={toggleTheme}
               className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-              title={isArabic ? 'الوضع الليلي' : 'Dark mode'}
+              title={isArabic ? ui('header.dark_mode') : ui('header.light_mode')}
             >
               {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
@@ -96,7 +104,7 @@ export default function Header() {
                   to={user.role === 'admin' ? '/admin' : '/dashboard'}
                   className="hidden sm:flex btn-primary text-sm"
                 >
-                  {t('nav.dashboard')}
+                  {ui('nav.dashboard')}
                 </Link>
 
                 {/* User Menu */}
@@ -126,14 +134,14 @@ export default function Header() {
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           onClick={() => setUserMenuOpen(false)}
                         >
-                          {t('nav.dashboard')}
+                          {ui('nav.dashboard')}
                         </Link>
                         <Link
                           to="/dashboard/profile"
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                           onClick={() => setUserMenuOpen(false)}
                         >
-                          {t('dashboard.profile')}
+                          {ui('dashboard.profile')}
                         </Link>
                         <hr className="my-1" />
                         <button
@@ -141,7 +149,7 @@ export default function Header() {
                           className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 flex items-center gap-2"
                         >
                           <LogOut className="w-4 h-4" />
-                          {t('nav.logout')}
+                          {ui('nav.logout')}
                         </button>
                       </div>
                     </>
@@ -154,13 +162,13 @@ export default function Header() {
                   to="/login"
                   className="btn-outline text-sm"
                 >
-                  {t('nav.login')}
+                  {ui('nav.login')}
                 </Link>
                 <Link
                   to="/register"
                   className="btn-primary text-sm"
                 >
-                  {t('nav.register')}
+                  {ui('nav.register')}
                 </Link>
               </div>
             )}

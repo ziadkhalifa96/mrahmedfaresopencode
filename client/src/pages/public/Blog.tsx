@@ -2,16 +2,17 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'motion/react';
 import { Calendar, User, ArrowRight, Search, BookOpen, Loader2 } from 'lucide-react';
-import { Link } from 'react-router';
+import { Link, useParams } from 'react-router';
 import SEO from '../../components/ui/SEO';
 import { Section, Container } from '../../components/ui/Section';
 import { blogApi } from '../../services';
+import { localize } from '../../utils/localize';
 import type { BlogPost } from '../../types';
 import { format } from 'date-fns';
 
 export default function Blog() {
-  const { i18n } = useTranslation();
-  const isArabic = i18n.language === 'ar';
+  const { lang = 'en' } = useParams<{ lang: string }>();
+  const { t } = useTranslation();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -22,7 +23,6 @@ export default function Blog() {
         const response = await blogApi.getAll(1, 20);
         setPosts(response.data.data || []);
       } catch {
-        // Posts will be loaded when API is ready
       } finally {
         setLoading(false);
       }
@@ -32,18 +32,16 @@ export default function Blog() {
   }, []);
 
   const filteredPosts = posts.filter((post) => {
-    const title = isArabic ? post.titleAr : post.title;
+    const title = localize(post, 'title');
     return title.toLowerCase().includes(search.toLowerCase());
   });
 
   return (
     <>
       <SEO
-        title={isArabic ? 'المدونة' : 'Blog'}
-        description={isArabic
-          ? 'مقالات ونصائحتعلم الإنجليزية - مدونة أكاديمية أحمد فares'
-          : 'English learning articles and tips - Ahmed Fares Academy Blog'
-        }
+        title={t('blog.hero_title')}
+        description={t('blog.hero_subtitle')}
+        keywords={t('seo.blog.keywords') || ''}
       />
 
       {/* Hero */}
@@ -56,13 +54,10 @@ export default function Blog() {
             className="text-center max-w-3xl mx-auto"
           >
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              {isArabic ? 'المدونة' : 'Blog'}
+              {t('blog.hero_title')}
             </h1>
             <p className="text-lg text-white/80">
-              {isArabic
-                ? 'مقالات ونصائح لتحسين مهاراتك في الإنجليزية'
-                : 'Articles and tips to improve your English skills'
-              }
+              {t('blog.hero_subtitle')}
             </p>
           </motion.div>
         </Container>
@@ -78,7 +73,7 @@ export default function Blog() {
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder={isArabic ? 'ابحث في المدونة...' : 'Search the blog...'}
+                placeholder={t('blog.search_placeholder')}
                 className="input pl-12 text-lg py-3"
               />
             </div>
@@ -96,13 +91,10 @@ export default function Blog() {
             >
               <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                {isArabic ? 'لا توجد مقالات بعد' : 'No Posts Yet'}
+                {t('blog.no_posts')}
               </h3>
               <p className="text-gray-600">
-                {isArabic
-                  ? 'سنقوم بنشر مقالات قريبًا. تابعنا!'
-                  : 'We will publish articles soon. Stay tuned!'
-                }
+                {t('blog.no_posts_desc')}
               </p>
             </motion.div>
           ) : (
@@ -116,14 +108,14 @@ export default function Blog() {
                   transition={{ duration: 0.4, delay: index * 0.1 }}
                 >
                   <Link
-                    to={`/blog/${post.slug}`}
+                    to={`/${lang}/blog/${post.slug}`}
                     className="card block hover:shadow-lg transition-all duration-300 group overflow-hidden"
                   >
                     <div className="aspect-video bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg mb-4 overflow-hidden">
                       {post.thumbnail ? (
                         <img
                           src={post.thumbnail}
-                          alt={isArabic ? post.titleAr : post.title}
+                          alt={localize(post, 'title')}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                       ) : (
@@ -139,18 +131,18 @@ export default function Blog() {
                       </div>
                       <div className="flex items-center gap-1">
                         <User className="w-4 h-4" />
-                        <span>{isArabic ? 'أحمد فares' : 'Ahmed Fares'}</span>
+                        <span>{t('blog.author')}</span>
                       </div>
                     </div>
                     <h3 className="text-lg font-semibold text-gray-900 mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                      {isArabic ? post.titleAr : post.title}
+                      {localize(post, 'title')}
                     </h3>
                     <p className="text-gray-600 text-sm line-clamp-3">
-                      {isArabic ? post.excerptAr || post.contentAr : post.excerpt || post.content}
+                      {localize(post, 'excerpt') || localize(post, 'content')}
                     </p>
                     <div className="mt-4 text-sm text-primary font-medium group-hover:translate-x-1 transition-transform flex items-center gap-1">
-                      {isArabic ? 'اقرأ المزيد' : 'Read More'}
-                      <ArrowRight className={`w-4 h-4 ${isArabic ? 'rotate-180' : ''}`} />
+                      {t('blog.read_more')}
+                      <ArrowRight className="w-4 h-4" />
                     </div>
                   </Link>
                 </motion.div>

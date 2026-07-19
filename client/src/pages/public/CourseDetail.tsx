@@ -7,12 +7,12 @@ import SEO from '../../components/ui/SEO';
 import { Section, Container } from '../../components/ui/Section';
 import { coursesApi, enrollmentsApi } from '../../services';
 import { useAuth } from '../../contexts/AuthContext';
+import { localize } from '../../utils/localize';
 import type { Course, Chapter } from '../../types';
 
 export default function CourseDetail() {
-  const { slug } = useParams<{ slug: string }>();
-  const { i18n } = useTranslation();
-  const isArabic = i18n.language === 'ar';
+  const { slug, lang = 'en' } = useParams<{ slug: string; lang: string }>();
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [course, setCourse] = useState<Course | null>(null);
   const [chapters, setChapters] = useState<Chapter[]>([]);
@@ -76,18 +76,18 @@ export default function CourseDetail() {
         <div className="text-center">
           <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-gray-900 mb-2">
-            {isArabic ? 'الكورس غير موجود' : 'Course Not Found'}
+            {t('courses.course_not_found')}
           </h2>
-          <Link to="/courses" className="text-primary hover:underline">
-            {isArabic ? 'العودة للكورسات' : 'Back to Courses'}
+          <Link to={`/${lang}/courses`} className="text-primary hover:underline">
+            {t('courses.back_to_courses')}
           </Link>
         </div>
       </div>
     );
   }
 
-  const title = isArabic ? course.titleAr : course.title;
-  const description = isArabic ? course.descriptionAr : course.description;
+  const title = localize(course, 'title');
+  const description = localize(course, 'description');
   const totalLessons = chapters.reduce((acc, ch) => acc + (ch.lessons?.length || 0), 0);
 
   return (
@@ -97,9 +97,9 @@ export default function CourseDetail() {
       <section className="bg-gradient-to-br from-primary to-primary-dark text-white py-16">
         <Container>
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <Link to="/courses" className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors">
-              <ArrowLeft className={`w-4 h-4 ${isArabic ? 'rotate-180' : ''}`} />
-              {isArabic ? 'العودة للكورسات' : 'Back to Courses'}
+            <Link to={`/${lang}/courses`} className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors">
+              <ArrowLeft className="w-4 h-4" />
+              {t('courses.back_to_courses')}
             </Link>
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div>
@@ -108,31 +108,31 @@ export default function CourseDetail() {
                 <div className="flex flex-wrap gap-4 mb-6">
                   <div className="flex items-center gap-2 text-white/80">
                     <BookOpen className="w-5 h-5" />
-                    <span>{chapters.length} {isArabic ? 'فصول' : 'Chapters'}</span>
+                    <span>{chapters.length} {t('courses.chapters_count')}</span>
                   </div>
                   <div className="flex items-center gap-2 text-white/80">
                     <FileText className="w-5 h-5" />
-                    <span>{totalLessons} {isArabic ? 'درس' : 'Lessons'}</span>
+                    <span>{totalLessons} {t('courses.lessons_count')}</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
                   <span className={`text-2xl font-bold ${course.isFree ? 'text-green-400' : 'text-yellow-400'}`}>
-                    {course.isFree ? (isArabic ? 'مجاني' : 'Free') : `${course.price} EGP`}
+                    {course.isFree ? t('courses.free') : `${course.price} EGP`}
                   </span>
                   {user ? (
                     enrolled ? (
                       <span className="btn bg-white/20 text-white cursor-default flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4" /> {isArabic ? 'مسجل بالفعل' : 'Enrolled'}
+                        <CheckCircle className="w-4 h-4" /> {t('courses.enrolled')}
                       </span>
                     ) : (
                       <button onClick={handleEnroll} disabled={enrolling} className="btn bg-white text-primary hover:bg-gray-100">
                         {enrolling ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-                        {isArabic ? 'سجل الآن' : 'Enroll Now'}
+                        {t('courses.enroll_now')}
                       </button>
                     )
                   ) : (
                     <Link to="/login" className="btn bg-white text-primary hover:bg-gray-100">
-                      {isArabic ? 'سجل دخول للتسجيل' : 'Login to Enroll'}
+                      {t('courses.login_to_enroll')}
                     </Link>
                   )}
                 </div>
@@ -157,12 +157,12 @@ export default function CourseDetail() {
         <Container>
           <div className="max-w-4xl mx-auto">
             <h2 className="text-2xl font-bold text-gray-900 mb-8">
-              {isArabic ? 'محتوى الكورس' : 'Course Content'}
+              {t('courses.course_content')}
             </h2>
 
             {chapters.length === 0 ? (
               <div className="text-center py-12 text-gray-500">
-                {isArabic ? 'سيتم إضافة المحتوى قريبًا' : 'Content will be added soon'}
+                {t('courses.content_coming_soon')}
               </div>
             ) : (
               <div className="space-y-4">
@@ -179,7 +179,7 @@ export default function CourseDetail() {
                       <span className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center text-sm font-bold text-primary">
                         {chapterIndex + 1}
                       </span>
-                      {isArabic ? chapter.titleAr : chapter.title}
+                      {localize(chapter, 'title')}
                     </h3>
                     {chapter.lessons && chapter.lessons.length > 0 ? (
                       <div className="space-y-2">
@@ -201,22 +201,22 @@ export default function CourseDetail() {
                             <div className="flex-1">
                               {enrolled || lesson.isFree ? (
                                 <Link to={`/lessons/${lesson.id}`} className="text-sm font-medium text-gray-700 hover:text-primary">
-                                  {isArabic ? lesson.titleAr : lesson.title}
+                                  {localize(lesson, 'title')}
                                 </Link>
                               ) : (
                                 <span className="text-sm font-medium text-gray-700">
-                                  {isArabic ? lesson.titleAr : lesson.title}
+                                  {localize(lesson, 'title')}
                                 </span>
                               )}
                               {lesson.duration > 0 && (
                                 <span className="text-xs text-gray-500 ml-2">
-                                  {lesson.duration} {isArabic ? 'دقيقة' : 'min'}
+                                  {lesson.duration} {t('courses.min')}
                                 </span>
                               )}
                             </div>
                             {lesson.isFree ? (
                               <span className="text-xs bg-success/10 text-success px-2 py-1 rounded-full">
-                                {isArabic ? 'مجاني' : 'Free'}
+                                {t('courses.free')}
                               </span>
                             ) : !enrolled ? (
                               <Lock className="w-4 h-4 text-gray-400" />
@@ -226,7 +226,7 @@ export default function CourseDetail() {
                       </div>
                     ) : (
                       <p className="text-sm text-gray-500 pl-10">
-                        {isArabic ? 'لا توجد دروس بعد' : 'No lessons yet'}
+                        {t('courses.no_lessons')}
                       </p>
                     )}
                   </motion.div>

@@ -4,31 +4,49 @@ import { motion } from 'motion/react';
 import { Phone, MapPin, Clock, Send, MessageCircle, CheckCircle } from 'lucide-react';
 import SEO from '../../components/ui/SEO';
 import { Section, Container } from '../../components/ui/Section';
+import { usePageContent } from '../../hooks/usePageContent';
+import { useSiteSettings } from '../../hooks/useSiteSettings';
 
 export default function Contact() {
-  const { i18n } = useTranslation();
-  const isArabic = i18n.language === 'ar';
+  const { t: ui } = useTranslation();
+  const { t, loading } = usePageContent('contact');
+  const { t: settings, loading: settingsLoading } = useSiteSettings();
   const [submitted, setSubmitted] = useState(false);
+
+  if (loading || settingsLoading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  const phone = settings('phone') || '01144258565';
+  const whatsapp = settings('whatsapp') || '201144258565';
+  const address = settings('address') || t('info', 'address');
+  const mapCoordinates = settings('mapCoordinates') as unknown as Record<string, number> | null;
+  const lat = mapCoordinates?.lat || 29.07338889;
+  const lng = mapCoordinates?.lng || 31.11063889;
 
   const contactInfo = [
     {
       icon: Phone,
-      title: isArabic ? 'الهاتف / واتساب' : 'Phone / WhatsApp',
-      value: '01144258565',
-      link: 'https://wa.me/201144258565',
+      title: t('info', 'phoneTitle') || ui('contact.phone_whatsapp'),
+      value: phone,
+      link: `https://wa.me/${whatsapp}`,
       color: 'bg-green-100 text-green-600',
     },
     {
       icon: MapPin,
-      title: isArabic ? 'العنوان' : 'Location',
-      value: isArabic ? 'خلف مسجد خاتم المرسلين، بنى سويف' : 'Behind Khatem Al-Morsaleen School, Beni Suef',
-      link: 'https://maps.google.com/?q=29.07338889,31.11063889',
+      title: t('info', 'locationTitle') || ui('contact.location'),
+      value: address,
+      link: `https://maps.google.com/?q=${lat},${lng}`,
       color: 'bg-red-100 text-red-600',
     },
     {
       icon: Clock,
-      title: isArabic ? 'أوقات الدوام' : 'Working Hours',
-      value: isArabic ? 'السبت - الخميس: 10 ص - 8 م' : 'Saturday - Thursday: 10 AM - 8 PM',
+      title: t('info', 'hoursTitle') || ui('contact.working_hours'),
+      value: t('info', 'hoursValue') || ui('contact.working_hours_value'),
       color: 'bg-blue-100 text-blue-600',
     },
   ];
@@ -41,11 +59,8 @@ export default function Contact() {
   return (
     <>
       <SEO
-        title={isArabic ? 'اتصل بنا' : 'Contact Us'}
-        description={isArabic
-          ? 'تواصل مع أكاديمية أحمد فares للإنجليزية - الهاتف والعنوان وأوقات الدوام'
-          : 'Contact Ahmed Fares English Academy - Phone, location, and working hours'
-        }
+        title={ui('seo.contact.title')}
+        description={ui('seo.contact.description')}
       />
 
       {/* Hero */}
@@ -58,13 +73,10 @@ export default function Contact() {
             className="text-center max-w-3xl mx-auto"
           >
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              {isArabic ? 'اتصل بنا' : 'Contact Us'}
+              {t('hero', 'title') || ui('contact.hero_title')}
             </h1>
             <p className="text-lg text-white/80">
-              {isArabic
-                ? 'نحن هنا لمساعدتك. تواصل معنا لأي استفسار'
-                : 'We are here to help. Contact us for any inquiries'
-              }
+              {t('hero', 'subtitle') || ui('contact.hero_subtitle')}
             </p>
           </motion.div>
         </Container>
@@ -111,7 +123,7 @@ export default function Contact() {
               transition={{ duration: 0.6 }}
             >
               <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                {isArabic ? 'أرسل رسالة' : 'Send a Message'}
+                {t('form', 'title') || ui('contact.send_message')}
               </h2>
 
               {submitted ? (
@@ -124,13 +136,10 @@ export default function Contact() {
                     <CheckCircle className="w-8 h-8 text-success" />
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    {isArabic ? 'تم الإرسال بنجاح!' : 'Message Sent Successfully!'}
+                    {t('form', 'successTitle') || ui('contact.message_sent')}
                   </h3>
                   <p className="text-gray-600">
-                    {isArabic
-                      ? 'سنقوم بالرد عليك في أقرب وقت'
-                      : 'We will get back to you as soon as possible'
-                    }
+                    {t('form', 'successDescription') || ui('contact.message_sent_desc')}
                   </p>
                 </motion.div>
               ) : (
@@ -138,38 +147,38 @@ export default function Contact() {
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        {isArabic ? 'الاسم' : 'Name'}
+                        {ui('contact.form_name')}
                       </label>
                       <input type="text" className="input" required />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        {isArabic ? 'البريد الإلكتروني' : 'Email'}
+                        {ui('contact.form_email')}
                       </label>
                       <input type="email" className="input" required />
                     </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      {isArabic ? 'الهاتف' : 'Phone'}
+                      {ui('contact.form_phone')}
                     </label>
                     <input type="tel" className="input" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      {isArabic ? 'الموضوع' : 'Subject'}
+                      {ui('contact.form_subject')}
                     </label>
                     <input type="text" className="input" required />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      {isArabic ? 'الرسالة' : 'Message'}
+                      {ui('contact.form_message')}
                     </label>
                     <textarea className="input min-h-[150px]" rows={5} required></textarea>
                   </div>
                   <button type="submit" className="btn-primary w-full">
                     <Send className="w-4 h-4" />
-                    {isArabic ? 'إرسال' : 'Send Message'}
+                    {ui('contact.form_submit')}
                   </button>
                 </form>
               )}
@@ -186,20 +195,20 @@ export default function Contact() {
               {/* Map */}
               <div className="rounded-xl overflow-hidden border border-gray-200 h-[300px]">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3484.123456789!2d31.11063889!3d29.07338889!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjnCsDA0JzI0LjIiTiAzMcKwMDYnMzguMyJF!5e0!3m2!1sen!2seg!4v1234567890"
+                  src={settings('mapEmbedUrl') || `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3484.123456789!2d${lng}!3d${lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjnCsDA0JzI0LjIiTiAzMcKwMDYnMzguMyJF!5e0!3m2!1sen!2seg!4v1234567890`}
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title={isArabic ? 'موقع أكاديمية أحمد فares' : 'Ahmed Fares Academy Location'}
+                  title={t('info', 'mapTitle') || ui('contact.map_title')}
                 />
               </div>
 
               {/* Quick WhatsApp */}
               <a
-                href="https://wa.me/201144258565"
+                href={`https://wa.me/${whatsapp}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="card flex items-center gap-4 hover:shadow-lg transition-all duration-300 bg-green-50 border-green-200"
@@ -208,8 +217,8 @@ export default function Contact() {
                   <MessageCircle className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900">{isArabic ? 'تواصل عبر واتساب' : 'Chat on WhatsApp'}</h3>
-                  <p className="text-gray-600 text-sm">{isArabic ? 'رد سريع على استفساراتك' : 'Quick response to your inquiries'}</p>
+                  <h3 className="font-semibold text-gray-900">{ui('contact.chat_whatsapp')}</h3>
+                  <p className="text-gray-600 text-sm">{ui('contact.whatsapp_desc')}</p>
                 </div>
               </a>
             </motion.div>

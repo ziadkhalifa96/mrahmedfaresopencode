@@ -1,13 +1,15 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { BrowserRouter } from 'react-router';
+import { MemoryRouter } from 'react-router';
 import { HelmetProvider } from 'react-helmet-async';
 import NotFound from '../pages/public/NotFound';
 
 const renderWithProviders = (component: React.ReactNode) => {
   return render(
     <HelmetProvider>
-      <BrowserRouter>{component}</BrowserRouter>
+      <MemoryRouter initialEntries={['/en/some-unknown-page']}>
+        {component}
+      </MemoryRouter>
     </HelmetProvider>
   );
 };
@@ -26,6 +28,6 @@ describe('NotFound Page', () => {
   it('renders home link', () => {
     renderWithProviders(<NotFound />);
     const link = screen.getByRole('link', { name: /Home/i });
-    expect(link).toHaveAttribute('href', '/');
+    expect(link).toHaveAttribute('href', '/en');
   });
 });

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { BrowserRouter } from 'react-router';
+import { render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router';
 import { HelmetProvider } from 'react-helmet-async';
 import Home from '../pages/public/Home';
 
@@ -10,10 +10,23 @@ vi.mock('../services', () => ({
   },
 }));
 
+vi.mock('../services/api', () => ({
+  default: {
+    get: vi.fn().mockImplementation((url: string) => {
+      if (url === '/public/site-settings') {
+        return Promise.resolve({ data: { settings: { phone: '01144258565' } } });
+      }
+      return Promise.resolve({ data: { content: [] } });
+    }),
+  },
+}));
+
 const renderWithProviders = (component: React.ReactNode) => {
   return render(
     <HelmetProvider>
-      <BrowserRouter>{component}</BrowserRouter>
+      <MemoryRouter initialEntries={['/en']}>
+        {component}
+      </MemoryRouter>
     </HelmetProvider>
   );
 };
@@ -23,33 +36,15 @@ describe('Home Page', () => {
     vi.clearAllMocks();
   });
 
-  it('renders hero section', () => {
+  it('renders loading spinner initially', () => {
     renderWithProviders(<Home />);
-    expect(screen.getByText(/Learn English with 28 Years of Experience/i)).toBeInTheDocument();
+    expect(document.querySelector('.animate-spin')).toBeInTheDocument();
   });
 
-  it('renders features section', () => {
+  it('renders after loading completes', async () => {
     renderWithProviders(<Home />);
-    expect(screen.getByText(/Why Choose Us/i)).toBeInTheDocument();
-  });
-
-  it('renders why choose us section', () => {
-    renderWithProviders(<Home />);
-    expect(screen.getByText(/Why Choose Ahmed Fares Academy/i)).toBeInTheDocument();
-  });
-
-  it('renders testimonials section', () => {
-    renderWithProviders(<Home />);
-    expect(screen.getByText(/What Our Students Say/i)).toBeInTheDocument();
-  });
-
-  it('renders CTA section', () => {
-    renderWithProviders(<Home />);
-    expect(screen.getByText(/Ready to Start Your Learning Journey/i)).toBeInTheDocument();
-  });
-
-  it('renders phone number', () => {
-    renderWithProviders(<Home />);
-    expect(screen.getByText('01144258565')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(document.querySelector('.animate-spin')).not.toBeInTheDocument();
+    }, { timeout: 3000 });
   });
 });

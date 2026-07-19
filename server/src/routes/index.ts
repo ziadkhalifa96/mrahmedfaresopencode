@@ -13,6 +13,7 @@ import adminRoutes from './admin.routes';
 import adminExamRoutes from './admin-exams.routes';
 import adminNotificationRoutes from './admin-notifications.routes';
 import publicRoutes from './public.routes';
+import pageContentRoutes from './page-content.routes';
 
 const router = Router();
 
@@ -29,6 +30,7 @@ router.use('/progress', progressRoutes);
 router.use('/admin', adminRoutes);
 router.use('/admin/exams', adminExamRoutes);
 router.use('/admin/notifications', adminNotificationRoutes);
+router.use('/page-content', pageContentRoutes);
 router.use('/public', publicRoutes);
 
 export default router;

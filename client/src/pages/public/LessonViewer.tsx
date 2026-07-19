@@ -4,11 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { ArrowLeft, ArrowRight, Play, FileText, CheckCircle, Loader2 } from 'lucide-react';
 import SEO from '../../components/ui/SEO';
 import { coursesApi, progressApi } from '../../services';
+import { localize } from '../../utils/localize';
 
 export default function LessonViewer() {
   const { lessonId } = useParams<{ lessonId: string }>();
-  const { i18n } = useTranslation();
-  const isArabic = i18n.language === 'ar';
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -23,7 +23,7 @@ export default function LessonViewer() {
         setData(response.data);
         setCompleted(false);
       } catch {
-        navigate('/courses');
+        navigate('/en/courses');
       } finally {
         setLoading(false);
       }
@@ -57,20 +57,24 @@ export default function LessonViewer() {
   const prevLesson = currentIndex > 0 ? siblings[currentIndex - 1] : null;
   const nextLesson = currentIndex < siblings.length - 1 ? siblings[currentIndex + 1] : null;
 
+  const courseTitle = localize(course, 'title');
+  const lessonTitle = localize(lesson, 'title');
+  const chapterTitle = localize(chapter, 'title');
+
   return (
     <>
-      <SEO title={`${lesson.title} - ${course.title}`} />
+      <SEO title={`${lessonTitle} - ${courseTitle}`} />
 
       <div className="min-h-screen bg-gray-50">
         <div className="bg-white border-b sticky top-0 z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
             <div className="flex items-center gap-3 min-w-0">
-              <Link to={`/courses/${course.slug}`} className="text-gray-400 hover:text-gray-600 flex-shrink-0">
-                <ArrowLeft className={`w-5 h-5 ${isArabic ? 'rotate-180' : ''}`} />
+              <Link to={`/en/courses/${course.slug}`} className="text-gray-400 hover:text-gray-600 flex-shrink-0">
+                <ArrowLeft className="w-5 h-5" />
               </Link>
               <div className="min-w-0">
-                <div className="text-sm font-medium text-gray-900 truncate">{lesson.title}</div>
-                <div className="text-xs text-gray-500">{chapter.title}</div>
+                <div className="text-sm font-medium text-gray-900 truncate">{lessonTitle}</div>
+                <div className="text-xs text-gray-500">{chapterTitle}</div>
               </div>
             </div>
             <button
@@ -83,7 +87,7 @@ export default function LessonViewer() {
               }`}
             >
               {completing ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle className="w-4 h-4" />}
-              {completed ? (isArabic ? 'مكتمل ✓' : 'Completed ✓') : (isArabic ? 'تعليم كمكتمل' : 'Mark Complete')}
+              {completed ? t('lesson.completed') : t('lesson.mark_complete')}
             </button>
           </div>
         </div>
@@ -91,7 +95,7 @@ export default function LessonViewer() {
         <div className="flex">
           <aside className="hidden lg:block w-72 bg-white border-r min-h-[calc(100vh-57px)] sticky top-[57px]">
             <div className="p-4">
-              <h3 className="font-semibold text-gray-900 text-sm mb-3">{chapter.title}</h3>
+              <h3 className="font-semibold text-gray-900 text-sm mb-3">{chapterTitle}</h3>
               <div className="space-y-1">
                 {siblings.map((s: any) => (
                   <Link
@@ -106,7 +110,7 @@ export default function LessonViewer() {
                     <span className="flex-shrink-0">
                       {s.type === 'video' ? <Play className="w-4 h-4" /> : <FileText className="w-4 h-4" />}
                     </span>
-                    <span className="truncate">{isArabic ? s.titleAr : s.title}</span>
+                    <span className="truncate">{localize(s, 'title')}</span>
                   </Link>
                 ))}
               </div>
@@ -117,43 +121,40 @@ export default function LessonViewer() {
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
               {lesson.type === 'video' && lesson.videoUrl && (
                 <div className="aspect-video bg-black rounded-xl overflow-hidden mb-8">
-                  <iframe src={lesson.videoUrl} className="w-full h-full" allowFullScreen title={lesson.title} />
+                  <iframe src={lesson.videoUrl} className="w-full h-full" allowFullScreen title={lessonTitle} />
                 </div>
               )}
 
               <div className="prose prose-lg max-w-none">
-                {lesson.content && <div dangerouslySetInnerHTML={{ __html: lesson.content }} />}
+                {lesson.content && i18n.language === 'en' && <div dangerouslySetInnerHTML={{ __html: lesson.content }} />}
+                {lesson.contentAr && i18n.language === 'ar' && (
+                  <div dir="rtl"><div dangerouslySetInnerHTML={{ __html: lesson.contentAr }} /></div>
+                )}
               </div>
-
-              {lesson.contentAr && isArabic && (
-                <div className="prose prose-lg max-w-none mt-8" dir="rtl">
-                  <div dangerouslySetInnerHTML={{ __html: lesson.contentAr }} />
-                </div>
-              )}
 
               {!lesson.content && !lesson.contentAr && (
                 <div className="text-center py-20 text-gray-500">
                   <FileText className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                  <p>{isArabic ? 'لا يوجد محتوى بعد' : 'No content available yet'}</p>
+                  <p>{t('lesson.noContent')}</p>
                 </div>
               )}
 
               <div className="flex items-center justify-between mt-12 pt-8 border-t">
                 {prevLesson ? (
                   <Link to={`/lessons/${prevLesson.id}`} className="btn-outline flex items-center gap-2">
-                    <ArrowLeft className={`w-4 h-4 ${isArabic ? 'rotate-180' : ''}`} />
-                    {isArabic ? 'الدرس السابق' : 'Previous'}
+                    <ArrowLeft className="w-4 h-4" />
+                    {t('lesson.previous')}
                   </Link>
                 ) : <div />}
 
                 {nextLesson ? (
                   <Link to={`/lessons/${nextLesson.id}`} className="btn-primary flex items-center gap-2">
-                    {isArabic ? 'الدرس التالي' : 'Next'}
-                    <ArrowRight className={`w-4 h-4 ${isArabic ? 'rotate-180' : ''}`} />
+                    {t('lesson.next')}
+                    <ArrowRight className="w-4 h-4" />
                   </Link>
                 ) : (
-                  <Link to={`/courses/${course.slug}`} className="btn-primary flex items-center gap-2">
-                    {isArabic ? 'العودة للكورس' : 'Back to Course'}
+                  <Link to={`/en/courses/${course.slug}`} className="btn-primary flex items-center gap-2">
+                    {t('lesson.backToCourse')}
                   </Link>
                 )}
               </div>

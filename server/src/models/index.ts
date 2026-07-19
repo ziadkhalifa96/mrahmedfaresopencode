@@ -16,6 +16,7 @@ import Notification from './Notification';
 import Page from './Page';
 import SiteSetting from './SiteSetting';
 import Announcement from './Announcement';
+import PageContent from './PageContent';
 
 // Course associations
 Course.hasMany(Chapter, { foreignKey: 'courseId', as: 'chapters' });
@@ -99,4 +100,5 @@ export {
   Page,
   SiteSetting,
   Announcement,
+  PageContent,
 };

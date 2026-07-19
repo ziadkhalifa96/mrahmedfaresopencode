@@ -6,11 +6,11 @@ import SEO from '../../components/ui/SEO';
 import { Section, Container } from '../../components/ui/Section';
 import { CourseCard } from '../../components/ui/Cards';
 import { coursesApi } from '../../services';
+import { localize } from '../../utils/localize';
 import type { Course } from '../../types';
 
 export default function Courses() {
-  const { i18n } = useTranslation();
-  const isArabic = i18n.language === 'ar';
+  const { t } = useTranslation();
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -21,7 +21,6 @@ export default function Courses() {
         const response = await coursesApi.getAll(1, 50);
         setCourses(response.data.data || []);
       } catch {
-        // Courses will be loaded when API is ready
       } finally {
         setLoading(false);
       }
@@ -31,8 +30,8 @@ export default function Courses() {
   }, []);
 
   const filteredCourses = courses.filter((course) => {
-    const title = isArabic ? course.titleAr : course.title;
-    const desc = isArabic ? course.descriptionAr : course.description;
+    const title = localize(course, 'title');
+    const desc = localize(course, 'description');
     return title.toLowerCase().includes(search.toLowerCase()) ||
            desc.toLowerCase().includes(search.toLowerCase());
   });
@@ -40,15 +39,9 @@ export default function Courses() {
   return (
     <>
       <SEO
-        title={isArabic ? 'الكورسات' : 'Courses'}
-        description={isArabic
-          ? 'تصفح كورسات أحمد فares للإنجليزية - كورسات شاملة للثانوية العامة'
-          : 'Browse Ahmed Fares English courses - comprehensive courses for Thanaweya Amma'
-        }
-        keywords={isArabic
-          ? 'كورسات إنجليزية, ثانوية عامة, أحمد فares'
-          : 'english courses, thanaweya amma, ahmed fares'
-        }
+        title={t('courses.hero_title')}
+        description={t('courses.hero_subtitle')}
+        keywords={t('seo.courses.keywords') || ''}
       />
 
       {/* Hero */}
@@ -61,13 +54,10 @@ export default function Courses() {
             className="text-center max-w-3xl mx-auto"
           >
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              {isArabic ? 'الكورسات' : 'Our Courses'}
+              {t('courses.hero_title')}
             </h1>
             <p className="text-lg text-white/80">
-              {isArabic
-                ? 'اكتشف كورساتنا الشاملة للإنجليزية المصممة لطلاب الثانوية العامة'
-                : 'Explore our comprehensive English courses designed for Thanaweya Amma students'
-              }
+              {t('courses.hero_subtitle')}
             </p>
           </motion.div>
         </Container>
@@ -83,7 +73,7 @@ export default function Courses() {
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder={isArabic ? 'ابحث عن كورس...' : 'Search for a course...'}
+                placeholder={t('courses.search_placeholder')}
                 className="input pl-12 text-lg py-3"
               />
             </div>
@@ -101,13 +91,10 @@ export default function Courses() {
             >
               <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                {isArabic ? 'لا توجد كورسات بعد' : 'No Courses Yet'}
+                {t('courses.no_courses')}
               </h3>
               <p className="text-gray-600">
-                {isArabic
-                  ? 'سنقوم بإضافة الكورسات قريبًا. تابعنا!'
-                  : 'We will add courses soon. Stay tuned!'
-                }
+                {t('courses.no_courses_desc')}
               </p>
             </motion.div>
           ) : (

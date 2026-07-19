@@ -188,6 +188,20 @@ export const publicApi = {
   getSettings: () => api.get('/public/settings'),
 };
 
+// Page Content
+export const pageContentApi = {
+  getPage: (page: string) => api.get(`/page-content/${page}`),
+  getAll: () => api.get('/page-content'),
+  upsert: (data: { page: string; section: string; key: string; valueEn: string; valueAr: string; metadata?: object }) =>
+    api.post('/page-content', data),
+  delete: (id: number) => api.delete(`/page-content/${id}`),
+};
+
+// Public Site Settings
+export const publicSiteSettingsApi = {
+  getSettings: () => api.get('/public/site-settings'),
+};
+
 // Progress
 export const progressApi = {
   markComplete: (lessonId: number) =>

@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { User, Mail, Lock, Phone, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import i18n from '../../i18n';
 
 type RegisterForm = z.infer<ReturnType<typeof getSchema>>;
 
@@ -19,7 +20,7 @@ function getSchema(t: (key: string) => string) {
 }
 
 export default function Register() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { register: registerUser } = useAuth();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -71,7 +72,7 @@ export default function Register() {
                   type="text"
                   {...register('name')}
                   className="input pl-10"
-                  placeholder={i18n.language === 'ar' ? 'الاسم الكامل' : 'Full Name'}
+                  placeholder={t('auth.register.name')}
                 />
               </div>
               {errors.name && (

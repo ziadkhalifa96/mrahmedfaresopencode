@@ -6,11 +6,11 @@ import { Clock, CheckCircle, XCircle, RotateCcw, Award, Loader2 } from 'lucide-r
 import SEO from '../../components/ui/SEO';
 import { Container } from '../../components/ui/Section';
 import { examsApi } from '../../services';
+import { localize } from '../../utils/localize';
 
 export default function TakeExam() {
   const { examId } = useParams<{ examId: string }>();
-  const { i18n } = useTranslation();
-  const isArabic = i18n.language === 'ar';
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const [exam, setExam] = useState<any>(null);
@@ -91,7 +91,7 @@ export default function TakeExam() {
   if (!exam) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-500">{isArabic ? 'الامتحان غير موجود' : 'Exam not found'}</p>
+        <p className="text-gray-500">{t('exam.exam_not_found')}</p>
       </div>
     );
   }
@@ -102,24 +102,27 @@ export default function TakeExam() {
     return `${m}:${s.toString().padStart(2, '0')}`;
   };
 
+  const examTitle = localize(exam, 'title');
+  const examDescription = localize(exam, 'description');
+
   // Start screen
   if (!attempt) {
     return (
       <>
-        <SEO title={isArabic ? exam.titleAr : exam.title} />
+        <SEO title={examTitle} />
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <Container>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-lg mx-auto text-center card p-8">
               <Award className="w-16 h-16 text-primary mx-auto mb-4" />
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">{isArabic ? exam.titleAr : exam.title}</h1>
-              {exam.description && <p className="text-gray-600 mb-6">{isArabic ? exam.descriptionAr : exam.description}</p>}
+              <h1 className="text-2xl font-bold text-gray-900 mb-2">{examTitle}</h1>
+              {examDescription && <p className="text-gray-600 mb-6">{examDescription}</p>}
               <div className="flex items-center justify-center gap-6 text-sm text-gray-600 mb-8">
-                <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> {exam.duration} {isArabic ? 'دقيقة' : 'min'}</span>
-                <span>{questions.length} {isArabic ? 'سؤال' : 'questions'}</span>
-                <span>{exam.maxAttempts} {isArabic ? 'محاولات' : 'attempts'}</span>
+                <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> {exam.duration} {t('exam.duration_min')}</span>
+                <span>{questions.length} {t('courses.questions')}</span>
+                <span>{exam.maxAttempts} {t('exam.attempts')}</span>
               </div>
               <button onClick={handleStart} className="btn-primary text-lg px-8 py-3">
-                {isArabic ? 'ابدأ الامتحان' : 'Start Exam'}
+                {t('exam.startExam')}
               </button>
             </motion.div>
           </Container>
@@ -132,7 +135,7 @@ export default function TakeExam() {
   if (result) {
     return (
       <>
-        <SEO title={isArabic ? 'نتيجة الامتحان' : 'Exam Result'} />
+        <SEO title={t('exam.exam_result')} />
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <Container>
             <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="max-w-lg mx-auto text-center card p-8">
@@ -142,18 +145,18 @@ export default function TakeExam() {
                 <XCircle className="w-16 h-16 text-danger mx-auto mb-4" />
               )}
               <h1 className="text-2xl font-bold text-gray-900 mb-2">
-                {result.passed ? (isArabic ? 'أحسنت! لقد نجحت' : 'Congratulations! You Passed') : (isArabic ? 'لم تنجح' : 'Not Passed')}
+                {result.passed ? t('exam.passed') : t('exam.notPassed')}
               </h1>
               <div className="text-5xl font-bold text-primary my-6">{result.score}%</div>
-              <p className="text-gray-600 mb-2">{result.correct} / {result.total} {isArabic ? 'إجابة صحيحة' : 'correct answers'}</p>
-              <p className="text-sm text-gray-500 mb-8">{isArabic ? 'الدرجة المطلوبة:' : 'Passing score:'} {exam.passingScore}%</p>
+              <p className="text-gray-600 mb-2">{result.correct} / {result.total} {t('exam.correctAnswers')}</p>
+              <p className="text-sm text-gray-500 mb-8">{t('exam.passingScore')}: {exam.passingScore}%</p>
               <div className="flex justify-center gap-4">
                 {!result.passed && (
                   <button onClick={() => { setAttempt(null); setResult(null); setAnswers({}); setCurrentQ(0); }} className="btn-primary">
-                    <RotateCcw className="w-4 h-4" /> {isArabic ? 'إعادة المحاولة' : 'Retry'}
+                    <RotateCcw className="w-4 h-4" /> {t('exam.retry')}
                   </button>
                 )}
-                <button onClick={() => navigate(-1)} className="btn-outline">{isArabic ? 'العودة' : 'Go Back'}</button>
+                <button onClick={() => navigate(-1)} className="btn-outline">{t('common.go_back')}</button>
               </div>
             </motion.div>
           </Container>
@@ -164,13 +167,13 @@ export default function TakeExam() {
 
   // Exam in progress
   const question = questions[currentQ];
-  const qText = isArabic ? question.questionAr : question.question;
+  const qText = localize(question, 'question');
   const options = (question.options as any[]) || [];
   const progress = ((currentQ + 1) / questions.length) * 100;
 
   return (
     <>
-      <SEO title={isArabic ? exam.titleAr : exam.title} />
+      <SEO title={examTitle} />
       <div className="min-h-screen bg-gray-50">
         {/* Timer bar */}
         <div className="bg-white border-b sticky top-0 z-10">
@@ -199,7 +202,7 @@ export default function TakeExam() {
                 className="card p-8"
               >
                 <div className="text-sm text-primary font-medium mb-3">
-                  {isArabic ? 'سؤال' : 'Question'} {currentQ + 1}
+                  {t('exam.question')} {currentQ + 1}
                 </div>
                 <h2 className="text-xl font-semibold text-gray-900 mb-6">{qText}</h2>
                 <div className="space-y-3">
@@ -219,7 +222,7 @@ export default function TakeExam() {
                         }`}>
                           {opt.id}
                         </span>
-                        <span>{isArabic ? opt.textAr : opt.text}</span>
+                        <span>{localize(opt, 'text')}</span>
                       </div>
                     </button>
                   ))}
@@ -233,7 +236,7 @@ export default function TakeExam() {
                 disabled={currentQ === 0}
                 className="btn-outline"
               >
-                {isArabic ? 'السابق' : 'Previous'}
+                {t('exam.previous')}
               </button>
 
               <div className="flex gap-1.5">
@@ -255,11 +258,11 @@ export default function TakeExam() {
                   className="btn-primary"
                 >
                   {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-                  {isArabic ? 'إرسال' : 'Submit'}
+                  {t('exam.submit')}
                 </button>
               ) : (
                 <button onClick={() => setCurrentQ((q) => q + 1)} className="btn-primary">
-                  {isArabic ? 'التالي' : 'Next'}
+                  {t('exam.next')}
                 </button>
               )}
             </div>

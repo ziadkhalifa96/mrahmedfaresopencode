@@ -6,13 +6,13 @@ import { Calendar, User, ArrowLeft, Loader2, BookOpen } from 'lucide-react';
 import SEO from '../../components/ui/SEO';
 import { Section, Container } from '../../components/ui/Section';
 import { blogApi } from '../../services';
+import { localize } from '../../utils/localize';
 import type { BlogPost } from '../../types';
 import { format } from 'date-fns';
 
 export default function BlogPostDetail() {
-  const { slug } = useParams<{ slug: string }>();
-  const { i18n } = useTranslation();
-  const isArabic = i18n.language === 'ar';
+  const { slug, lang = 'en' } = useParams<{ slug: string; lang: string }>();
+  const { t } = useTranslation();
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -23,7 +23,6 @@ export default function BlogPostDetail() {
         const response = await blogApi.getBySlug(slug);
         setPost(response.data.post);
       } catch {
-        // Post will be loaded when API is ready
       } finally {
         setLoading(false);
       }
@@ -46,24 +45,24 @@ export default function BlogPostDetail() {
         <div className="text-center">
           <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-gray-900 mb-2">
-            {isArabic ? 'المقال غير موجود' : 'Post Not Found'}
+            {t('blog.post_not_found')}
           </h2>
-          <Link to="/blog" className="text-primary hover:underline">
-            {isArabic ? 'العودة للمدونة' : 'Back to Blog'}
+          <Link to={`/${lang}/blog`} className="text-primary hover:underline">
+            {t('blog.back_to_blog')}
           </Link>
         </div>
       </div>
     );
   }
 
-  const title = isArabic ? post.titleAr : post.title;
-  const content = isArabic ? post.contentAr : post.content;
+  const title = localize(post, 'title');
+  const content = localize(post, 'content');
 
   return (
     <>
       <SEO
         title={title}
-        description={isArabic ? post.excerptAr : post.excerpt}
+        description={localize(post, 'excerpt')}
         image={post.thumbnail}
       />
 
@@ -77,11 +76,11 @@ export default function BlogPostDetail() {
             className="max-w-3xl mx-auto"
           >
             <Link
-              to="/blog"
+              to={`/${lang}/blog`}
               className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors"
             >
-              <ArrowLeft className={`w-4 h-4 ${isArabic ? 'rotate-180' : ''}`} />
-              {isArabic ? 'العودة للمدونة' : 'Back to Blog'}
+              <ArrowLeft className="w-4 h-4" />
+              {t('blog.back_to_blog')}
             </Link>
             <h1 className="text-3xl md:text-4xl font-bold mb-4">{title}</h1>
             <div className="flex items-center gap-4 text-white/80">
@@ -91,7 +90,7 @@ export default function BlogPostDetail() {
               </div>
               <div className="flex items-center gap-1">
                 <User className="w-4 h-4" />
-                <span>{isArabic ? 'أحمد فares' : 'Ahmed Fares'}</span>
+                <span>{t('blog.author')}</span>
               </div>
             </div>
           </motion.div>

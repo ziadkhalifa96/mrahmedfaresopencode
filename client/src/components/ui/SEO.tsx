@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
+import { useSiteSettings } from '../../hooks/useSiteSettings';
 
 interface SEOProps {
   title?: string;
@@ -10,16 +11,15 @@ interface SEOProps {
 }
 
 export default function SEO({ title, description, keywords, image, url }: SEOProps) {
-  const { i18n } = useTranslation();
-  const isArabic = i18n.language === 'ar';
+  const { i18n, t } = useTranslation();
+  const { t: settings } = useSiteSettings();
 
-  const defaultTitle = isArabic
-    ? 'أكاديمية أحمد فares للإنجليزية'
-    : 'Ahmed Fares English Academy';
+  const defaultTitle = settings('academyName')
+    ? `${settings('academyName')} ${t('seo.default.title')}`
+    : t('seo.default.title');
 
-  const defaultDescription = isArabic
-    ? 'منصة تعلم الإنجليزية المتميزة لطلاب الثانوية العامة المصرية - 28 عامًا من الخبرة'
-    : 'Premium English learning platform for Egyptian Thanaweya Amma students - 28 years of experience';
+  const defaultDescription = settings('seoDescription')
+    || t('seo.default.description');
 
   const fullTitle = title ? `${title} | ${defaultTitle}` : defaultTitle;
 
@@ -36,7 +36,7 @@ export default function SEO({ title, description, keywords, image, url }: SEOPro
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
       <meta name="twitter:description" content={description || defaultDescription} />
-      <html lang={isArabic ? 'ar' : 'en'} dir={isArabic ? 'rtl' : 'ltr'} />
+      <html lang={i18n.language} dir={i18n.language === 'ar' ? 'rtl' : 'ltr'} />
     </Helmet>
   );
 }

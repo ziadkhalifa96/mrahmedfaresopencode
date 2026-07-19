@@ -1,17 +1,24 @@
-import { Link } from 'react-router';
+import { Link, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Phone, MapPin, Facebook, Instagram, Youtube } from 'lucide-react';
+import { useSiteSettings } from '../../hooks/useSiteSettings';
 
 export default function Footer() {
-  const { t, i18n } = useTranslation();
-  const isArabic = i18n.language === 'ar';
+  const { lang = 'en' } = useParams<{ lang: string }>();
+  const { t: ui } = useTranslation();
+  const { t: settings } = useSiteSettings();
+
+  const phone = settings('phone') || '01144258565';
+  const whatsapp = settings('whatsapp') || '201144258565';
+  const address = settings('address') || ui('footer.address');
+  const socialLinks = (settings('socialLinks') || {}) as Record<string, string>;
 
   const quickLinks = [
-    { to: '/', label: t('nav.home') },
-    { to: '/courses', label: t('nav.courses') },
-    { to: '/blog', label: t('nav.blog') },
-    { to: '/about', label: t('nav.about') },
-    { to: '/contact', label: t('nav.contact') },
+    { to: `/${lang}`, label: ui('nav.home') },
+    { to: `/${lang}/courses`, label: ui('nav.courses') },
+    { to: `/${lang}/blog`, label: ui('nav.blog') },
+    { to: `/${lang}/about`, label: ui('nav.about') },
+    { to: `/${lang}/contact`, label: ui('nav.contact') },
   ];
 
   return (
@@ -25,17 +32,17 @@ export default function Footer() {
                 <span className="text-white font-bold text-xl">AF</span>
               </div>
               <span className="font-bold text-xl">
-                {isArabic ? 'أكاديمية أحمد فares' : 'Ahmed Fares Academy'}
+                {settings('academyName') || ui('footer.academy_name')}
               </span>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
-              {t('footer.description')}
+              {ui('footer.description')}
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">{t('footer.quickLinks')}</h3>
+            <h3 className="font-semibold text-lg mb-4">{ui('footer.quickLinks')}</h3>
             <ul className="space-y-2">
               {quickLinks.map((link) => (
                 <li key={link.to}>
@@ -52,40 +59,55 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">{t('footer.contact')}</h3>
+            <h3 className="font-semibold text-lg mb-4">{ui('footer.contact')}</h3>
             <ul className="space-y-3">
               <li className="flex items-center gap-3 text-gray-400 text-sm">
                 <Phone className="w-4 h-4 flex-shrink-0" />
-                <a href="https://wa.me/201144258565" className="hover:text-white transition-colors">
-                  01144258565
+                <a href={`https://wa.me/${whatsapp}`} className="hover:text-white transition-colors">
+                  {phone}
                 </a>
               </li>
               <li className="flex items-start gap-3 text-gray-400 text-sm">
                 <MapPin className="w-4 h-4 flex-shrink-0 mt-0.5" />
-                <span>
-                  {isArabic
-                    ? 'خلف مسجد خاتم المرسلين، بنى سويف'
-                    : 'Behind Khatem Al-Morsaleen School, Beni Suef'}
-                </span>
+                <span>{address}</span>
               </li>
             </ul>
             <div className="flex gap-3 mt-4">
-              <a href="#" className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a href="#" className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a href="#" className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">
-                <Youtube className="w-5 h-5" />
-              </a>
+              {socialLinks.facebook && (
+                <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer" className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">
+                  <Facebook className="w-5 h-5" />
+                </a>
+              )}
+              {socialLinks.instagram && (
+                <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">
+                  <Instagram className="w-5 h-5" />
+                </a>
+              )}
+              {socialLinks.youtube && (
+                <a href={socialLinks.youtube} target="_blank" rel="noopener noreferrer" className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">
+                  <Youtube className="w-5 h-5" />
+                </a>
+              )}
+              {!socialLinks.facebook && !socialLinks.instagram && !socialLinks.youtube && (
+                <>
+                  <a href="#" className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">
+                    <Facebook className="w-5 h-5" />
+                  </a>
+                  <a href="#" className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">
+                    <Instagram className="w-5 h-5" />
+                  </a>
+                  <a href="#" className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors">
+                    <Youtube className="w-5 h-5" />
+                  </a>
+                </>
+              )}
             </div>
           </div>
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">
           <p>
-            &copy; {new Date().getFullYear()} Ahmed Fares English Academy. {t('footer.rights')}.
+            &copy; {new Date().getFullYear()} {settings('academyName') || ui('footer.academy_name')}. {ui('footer.rights')}.
           </p>
         </div>
       </div>
